@@ -17,8 +17,8 @@
     		document.getElementById("mid").focus();
     	}
     	else {
-    		if(flag == 's') location.href = "${ctp}/user/userSearchList?mid="+mid;
-    		else location.href = "${ctp}/user/userSearchListOk?mid="+mid;
+    		if(flag == 's') location.href = "${ctp}/user2/userSearchList?mid="+mid;
+    		else location.href = "${ctp}/user2/userSearchListOk?mid="+mid;
     	}
     }
     
@@ -32,7 +32,7 @@
     		document.getElementById("content").focus();
     	}
     	else {
-    		location.href = "${ctp}/user/userSearchPart?part="+part+"&content="+content;
+    		location.href = "${ctp}/user2/userSearchPart?part="+part+"&content="+content;
     	}
     }
   </script>
@@ -82,7 +82,7 @@
   </div>
 </div>
 <br/>
-<div class="text-center"><a href="${ctp}/user/userMain" class="btn btn-warning">돌아가기</a></div>
+<div class="text-center"><a href="${ctp}/user2/userMain" class="btn btn-warning">돌아가기</a></div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>

@@ -6,19 +6,20 @@
   <div class="w3-bar w3-black w3-card">
     <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
     <a href="http://192.168.50.53:9090/JspringProject" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-    <a href="${ctp}/guest/guestList" class="w3-bar-item w3-button w3-padding-large w3-hide-small">GUEST</a>
-    <a href="${ctp}/board/boardList" class="w3-bar-item w3-button w3-padding-large w3-hide-small">BOARD</a>
+    <a href="${ctp}/guest/guestList" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Guest</a>
+    <a href="${ctp}/board/boardList" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Board</a>
     <a href="${ctp}/pds/pdsList" class="w3-bar-item w3-button w3-padding-large w3-hide-small">PDS</a>
     <div class="w3-dropdown-hover w3-hide-small">
       <button class="w3-padding-large w3-button" title="More">Study1 <i class="fa fa-caret-down"></i></button>     
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="${ctp}/user/userMain" class="w3-bar-item w3-button">SessionTemplate</a>
+        <a href="${ctp}/user/userMain" class="w3-bar-item w3-button">SessionTempleat</a>
+        <a href="${ctp}/user2/userMain" class="w3-bar-item w3-button">Mybatis 연습</a>
         <a href="${ctp}/study/ajax/ajaxMain" class="w3-bar-item w3-button">Ajax연습</a>
         <a href="#" class="w3-bar-item w3-button">연습</a>
       </div>
     </div>
     <div class="w3-dropdown-hover w3-hide-small">
-      <button class="w3-padding-large w3-button" title="More">Study2<i class="fa fa-caret-down"></i></button>     
+      <button class="w3-padding-large w3-button" title="More">Study2 <i class="fa fa-caret-down"></i></button>     
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
         <a href="#" class="w3-bar-item w3-button">카카오맵</a>
         <a href="#" class="w3-bar-item w3-button">날씨API</a>
@@ -38,16 +39,16 @@
     </div>
     <a href="${ctp}/member/memberLogin" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Login</a>
     <a href="${ctp}/member/memberLogout" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Logout</a>
-    <a href="${ctp}/member/memberJoin" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Join</a>
+    <a href="${ctp}/member/memberJoin" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Loin</a>
   </div>
 </div>
 
 <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
 <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
   <a href="${ctp}/guest/guestList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Guest</a>
-  <a href="${ctp}/guest/boardList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Board</a>
-  <a href="${ctp}/guest/pdsList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">PDS</a>
-  <a href="${ctp}/guest/loginList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Login</a>
-  <a href="${ctp}/guest/logoutList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Logout</a>
-  <a href="${ctp}/guest/joinList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Join</a>
+  <a href="${ctp}/board/boardList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Board</a>
+  <a href="${ctp}/pds/pdsList" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">PDS</a>
+  <a href="${ctp}/member/memberLogin" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Login</a>
+  <a href="${ctp}/member/memberLogout" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Logout</a>
+  <a href="${ctp}/member/memberJoin" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Join</a>
 </div>

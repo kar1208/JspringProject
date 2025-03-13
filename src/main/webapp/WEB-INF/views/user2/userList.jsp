@@ -13,7 +13,7 @@
     function delCheck(idx) {
     	let ans = confirm("현재 회원을 삭제하시겠습니까?");
     	if(!ans) return false;
-    	else location.href = "${ctp}/user/userDeleteOk?idx="+idx;
+    	else location.href = "${ctp}/user2/userDeleteOk?idx="+idx;
     }
   </script>
 </head>
@@ -23,18 +23,6 @@
 <p><br/></p>
 <div class="container">
   <h2>회원 전체 리스트</h2>
-  <br/>
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-info dropdown-toggle mb-3" data-bs-toggle="dropdown" aria-expanded="false">
-      회원 정렬
-    </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="${ctp}/user/userArrayView">빠른등록순</a></li>
-      <li><a class="dropdown-item" href="${ctp}/user/userList">최근등록순</a></li>
-      <li><a class="dropdown-item" href="${ctp}/user/userArrayName">이름순</a></li>
-      <li><a class="dropdown-item" href="${ctp}/user/userArrayId">아이디순</a></li>
-    </ul>
-  </div>
   <table class="table table-hover text-center">
     <tr class="table-secondary">
       <th>번호</th>
@@ -56,14 +44,14 @@
         <td>${vo.gender}</td>
         <td>${vo.address}</td>
         <td>
-          <a href="${ctp}/user/userUpdate?idx=${vo.idx}" class="badge bg-warning text-decoration-none">수정</a> /
+          <a href="${ctp}/user2/userUpdate?idx=${vo.idx}" class="badge bg-warning text-decoration-none">수정</a> /
           <a href="javascript:delCheck(${vo.idx})" class="badge bg-danger text-decoration-none">삭제</a>
         </td>
       </tr>
     </c:forEach>
   </table>
   <br/>
-  <div><a href="${ctp}/user/userMain" class="btn btn-warning">돌아가기</a></div>
+  <div><a href="${ctp}/user2/userMain" class="btn btn-warning">돌아가기</a></div>
 </div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />

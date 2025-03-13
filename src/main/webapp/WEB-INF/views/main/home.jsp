@@ -3,12 +3,12 @@
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<title>SpringProject</title>
-  <style>
+	<style>
 		body {font-family: "Lato", sans-serif}
 		.mySlides {display: none}
 	</style>
@@ -20,9 +20,9 @@
 <!-- Page content -->
 <div class="w3-content" style="max-width:2000px;margin-top:46px">
 
- <!-- Automatic Slideshow Images -->
- <jsp:include page="/WEB-INF/views/include/slide.jsp" />
- 
+<!-- Automatic Slideshow Images -->
+<jsp:include page="/WEB-INF/views/include/slide.jsp" />
+
   <!-- The Band Section -->
   <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
     <h2 class="w3-wide">THE BAND</h2>
@@ -33,7 +33,7 @@
     <div class="w3-row w3-padding-32">
       <div class="w3-third">
         <p>Name</p>
-        <img src="${ctp}/resources/images/bandmember.jpg" class="w3-round w3-margin-bottom" alt="Random Name" style="width:60%">
+        <img src="${ctp}/images/bandmember.jpg" class="w3-round w3-margin-bottom" alt="Random Name" style="width:60%">
       </div>
       <div class="w3-third">
         <p>Name</p>
@@ -118,7 +118,7 @@
       <div class="w3-col m6 w3-large w3-margin-bottom">
         <i class="fa fa-map-marker" style="width:30px"></i> Green Computer, Kr<br>
         <i class="fa fa-phone" style="width:30px"></i> Phone: +00 151515<br>
-        <i class="fa fa-envelope" style="width:30px"> </i> Email: kar1208@naver.com<br>
+        <i class="fa fa-envelope" style="width:30px"> </i> Email: cjsk1126@naver.com<br>
       </div>
       <div class="w3-col m6">
         <form action="/action_page.php" target="_blank">

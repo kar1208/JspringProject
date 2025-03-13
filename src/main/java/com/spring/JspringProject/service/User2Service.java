@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.spring.JspringProject.vo.UserVo;
 
-public interface UserService {
+public interface User2Service {
 
 	UserVo getUserIdSearch(String mid);
 
@@ -19,11 +19,5 @@ public interface UserService {
 	UserVo getSearchIdx(int idx);
 
 	int setUserUpdate(UserVo vo);
-
-	List<UserVo> getUserArrayView();
-
-	List<UserVo> getUserArrayName();
-
-	List<UserVo> getUserArrayId();
 
 }

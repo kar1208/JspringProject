@@ -49,7 +49,7 @@
         <td colspan="2">
           <input type="submit" value="회원가입" class="btn btn-success me-2"/>
           <input type="reset" value="다시입력" class="btn btn-warning me-2"/>
-          <input type="button" value="돌아가기" onclick="location.href='${ctp}/user/userMain';" class="btn btn-primary"/>
+          <input type="button" value="돌아가기" onclick="location.href='${ctp}/user2/userMain';" class="btn btn-primary"/>
         </td>
       </tr>
     </table>

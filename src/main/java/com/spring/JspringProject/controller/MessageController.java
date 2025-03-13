@@ -27,6 +27,20 @@ public class MessageController {
 			model.addAttribute("message", "회원에 가입실패");
 			model.addAttribute("url", "user/userInput");
 		}
+		
+		// user2
+		if(msgFlag.equals("user2InputOk")) {
+			model.addAttribute("message", "회원에 가입되었습니다.");
+			model.addAttribute("url", "user2/userMain");
+		}
+		
+		else if(msgFlag.equals("user2InputNo")) {
+			model.addAttribute("message", "회원에 가입실패");
+			model.addAttribute("url", "user2/userInput");
+		}
+		
+		
+		
 		else if(msgFlag.equals("homeOk")) {
 			model.addAttribute("message", "홈으로 갑니다.");
 			model.addAttribute("url", "/");
@@ -35,10 +49,20 @@ public class MessageController {
 			model.addAttribute("message", "이미 사용중인 아이디 입니다. \\n다른 아이디로 가입하세요.");
 			model.addAttribute("url", "/");
 		}
+		
+		
 		else if(msgFlag.equals("userSearchNo")) {
 			model.addAttribute("message", "검색한 회원이 없습니다.");
 			model.addAttribute("url", "user/userSearch");
 		}
+		
+		//
+		else if(msgFlag.equals("user2SearchNo")) {
+			model.addAttribute("message", "검색한 회원이 없습니다.");
+			model.addAttribute("url", "user2/userSearch");
+		}
+		
+		
 		else if(msgFlag.equals("userDeleteOk")) {
 			model.addAttribute("message", "회원을 삭제처리 하였습니다.");
 			model.addAttribute("url", "user/userList");
@@ -47,6 +71,19 @@ public class MessageController {
 			model.addAttribute("message", "회원 삭제실패");
 			model.addAttribute("url", "user/userList");
 		}
+		
+		
+		//
+		else if(msgFlag.equals("user2DeleteOk")) {
+			model.addAttribute("message", "회원을 삭제처리 하였습니다.");
+			model.addAttribute("url", "user2/userList");
+		}
+		else if(msgFlag.equals("user2DeleteNo")) {
+			model.addAttribute("message", "회원 삭제실패");
+			model.addAttribute("url", "user2/userList");
+		}
+		
+		
 		else if(msgFlag.equals("userUpdateOk")) {
 			model.addAttribute("message", "회원정보 수정완료");
 			model.addAttribute("url", "user/userList");
@@ -56,6 +93,24 @@ public class MessageController {
 			model.addAttribute("url", "user/userList");
 		}
 		
+		//
+		else if(msgFlag.equals("user2UpdateOk")) {
+			model.addAttribute("message", "회원정보 수정완료");
+			model.addAttribute("url", "user2/userList");
+		}
+		else if(msgFlag.equals("user2UpdateNo")) {
+			model.addAttribute("message", "회원정보 수정실패");
+			model.addAttribute("url", "user2/userList");
+		}
+		
+		else if(msgFlag.equals("guestInputOk")) {
+			model.addAttribute("message", "방명록 등록완료");
+			model.addAttribute("url", "guest/guestList");
+		}
+		else if(msgFlag.equals("guestInputNo")) {
+			model.addAttribute("message", "방명록 등록실패");
+			model.addAttribute("url", "guset/guestInput");
+		}
 		return "include/message";
 	}
 }

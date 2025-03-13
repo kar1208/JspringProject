@@ -13,14 +13,14 @@
 <jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
-  <h2>회 원 관 리</h2>
+  <h2>회 원 관 리2</h2>
   <hr/>
   <div>전체 회원수 : ${userCnt}명</div>
   <hr/>
   <div>
-    <input type="button" value="회원등록" onclick="location.href='${ctp}/user/userInput';" class="btn btn-success me-3"/>
-    <input type="button" value="회원개별조회" onclick="location.href='${ctp}/user/userSearch';" class="btn btn-primary me-3"/>
-    <input type="button" value="회원전체조회" onclick="location.href='${ctp}/user/userList';" class="btn btn-secondary"/>
+    <input type="button" value="회원등록" onclick="location.href='${ctp}/user2/userInput';" class="btn btn-success me-3"/>
+    <input type="button" value="회원개별조회" onclick="location.href='${ctp}/user2/userSearch';" class="btn btn-primary me-3"/>
+    <input type="button" value="회원전체조회" onclick="location.href='${ctp}/user2/userList';" class="btn btn-secondary"/>
   </div>
 </div>
 <p><br/></p>
