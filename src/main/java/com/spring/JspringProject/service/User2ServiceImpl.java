@@ -48,4 +48,9 @@ public class User2ServiceImpl implements User2Service {
 	public int setUserUpdate(UserVo vo) {
 		return user2Dao.setUserUpdate(vo);
 	}
+
+	@Override
+	public List<UserVo> getUserOrderList(String order) {
+		return user2Dao.getUserOrderList(order);
+	}
 }

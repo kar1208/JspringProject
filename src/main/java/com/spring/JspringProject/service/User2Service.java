@@ -20,4 +20,6 @@ public interface User2Service {
 
 	int setUserUpdate(UserVo vo);
 
+	List<UserVo> getUserOrderList(String order);
+
 }

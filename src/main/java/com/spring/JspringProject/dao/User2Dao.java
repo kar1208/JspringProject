@@ -10,7 +10,8 @@ public interface User2Dao {
 
 	UserVo getUserIdSearch(@Param("mid") String mid);
 
-	int setUserInput(@Param("vo") UserVo vo);
+//	int setUserInput(@Param("vo") UserVo vo);
+	int setUserInput(UserVo vo);
 
 	UserVo getUserSearchPart(@Param("vo") UserVo vo);
 
@@ -20,6 +21,9 @@ public interface User2Dao {
 
 	UserVo getSearchIdx(@Param("idx") int idx);
 
-	int setUserUpdate(@Param("vo") UserVo vo);
+//	int setUserUpdate(@Param("vo") UserVo vo);
+	int setUserUpdate(UserVo vo);
+
+	List<UserVo> getUserOrderList(String order);
 
 }

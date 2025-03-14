@@ -3,7 +3,7 @@
 <mapper namespace="com.spring.JspringProject.dao.GuestDao">
 
 	<select id="getGuestList" resultType="com.spring.JspringProject.vo.GuestVo">
-		select * from guest order by idx desc;
+		select * from guest order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
 
 	<select id="guestArrayView" resultType="com.spring.JspringProject.vo.GuestVo">
@@ -14,9 +14,20 @@
 		select * from guest order by name;
 	</select>
 
+	<select id="getTotRecCnt" resultType="int">
+		select count(*) from guest;
+	</select>
+
+
+
 
 	<insert id="getGuestInput">
 		insert into guest values (default,#{vo.name},#{vo.content},#{vo.email},#{vo.homePage},#{vo.hostIp},default);
 	</insert>
 	
+	
+	
+	<delete id="setGuestDelete">
+		delete from guest where idx = #{idx};
+	</delete>
 </mapper>

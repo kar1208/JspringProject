@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.JspringProject.vo.UserVo;
 
-@Repository("UserDao")
+@Repository("UserDao") 
 public class UserDaoImpl implements UserDao {
 
 	@Autowired

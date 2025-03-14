@@ -15,8 +15,8 @@ public class GuestServiceImpl implements GuestService {
 	GuestDao guestDao;
 
 	@Override
-	public List<GuestVo> getGuestList() {
-		return guestDao.getGuestList();
+	public List<GuestVo> getGuestList(int startIndexNo, int pageSize) {
+		return guestDao.getGuestList(startIndexNo, pageSize);
 	}
 
 	@Override
@@ -32,5 +32,15 @@ public class GuestServiceImpl implements GuestService {
 	@Override
 	public List<GuestVo> guestArrayName() {
 		return guestDao.guestArrayName();
+	}
+
+	@Override
+	public int setGuestDelete(int idx) {
+		return guestDao.setGuestDelete(idx);
+	}
+
+	@Override
+	public int getTotRecCnt() {
+		return guestDao.getTotRecCnt();
 	}
 }
