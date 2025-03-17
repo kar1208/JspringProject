@@ -15,7 +15,8 @@
         <a href="${ctp}/user/userMain" class="w3-bar-item w3-button">SessionTempleat</a>
         <a href="${ctp}/user2/userMain" class="w3-bar-item w3-button">Mybatis 연습</a>
         <a href="${ctp}/study/ajax/ajaxForm" class="w3-bar-item w3-button">Ajax연습</a>
-        <a href="#" class="w3-bar-item w3-button">연습</a>
+        <a href="${ctp}/study/fileUpload/fileUpload" class="w3-bar-item w3-button">파일업로드연습</a>
+        <a href="${ctp}/study/mail/mailForm" class="w3-bar-item w3-button">메일연습</a>
       </div>
     </div>
     <div class="w3-dropdown-hover w3-hide-small">
@@ -39,7 +40,7 @@
     </div>
     <a href="${ctp}/member/memberLogin" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Login</a>
     <a href="${ctp}/member/memberLogout" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Logout</a>
-    <a href="${ctp}/member/memberJoin" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Loin</a>
+    <a href="${ctp}/member/memberJoin" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Join</a>
   </div>
 </div>
 

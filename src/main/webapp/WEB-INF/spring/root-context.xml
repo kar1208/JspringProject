@@ -30,4 +30,24 @@
 
 	<mybatis-spring:scan base-package="com.spring.JspringProject.dao"/>   <!-- 저장소 위치를(dao)스캔해서 연결시켜줌 -->
 
+	<!-- 메일처리를 위한 라이브러리를 bean으로 등록 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="beorc8686@gmail.com" />
+		<property name="password" value="fsffzfrvlwstlmsz" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+
 </beans>
