@@ -18,7 +18,7 @@ public class MemberVo {
 	private String tel;
 	private String address;
 	private String email;
-	private String jop;
+	private String job;
 	private String hobby;
 	private String photo;
 	private String content;

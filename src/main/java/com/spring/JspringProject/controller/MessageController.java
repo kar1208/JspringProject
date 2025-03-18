@@ -2,6 +2,7 @@ package com.spring.JspringProject.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MessageController {
 	@RequestMapping(value = "/message/{msgFlag}", method = RequestMethod.GET)
-	public String getMessage(Model model, @PathVariable String msgFlag,
-			HttpServletRequest request,
+	public String getMessage(Model model, @PathVariable String msgFlag, HttpSession session, 
+			HttpServletRequest request, 
 				@RequestParam(name="mid", defaultValue = "", required = false)String mid
 			) {
 		
@@ -145,6 +146,50 @@ public class MessageController {
 			model.addAttribute("message", "메일을 성공적으로 발송했습니다.");
 			model.addAttribute("url", "study/mail/mailForm");
 		}
+		else if(msgFlag.equals("idCheckNo")) {
+			model.addAttribute("message", "아이디가 중복되었습니다.\\n확인하시고 다시 가입하세요");
+			model.addAttribute("url", "/member/memberJoin");
+		}
+		else if(msgFlag.equals("nickCheckNo")) {
+			model.addAttribute("message", "닉네임이 중복되었습니다.\\n확인하시고 다시 가입하세요");
+			model.addAttribute("url", "/member/memberJoin");
+		}
+		else if(msgFlag.equals("memberJoinOk")) {
+			model.addAttribute("message", "회원 가입되셨습니다.\\n로그인후 사용하세요.");
+			model.addAttribute("url", "/member/memberLogin");
+		}
+		else if(msgFlag.equals("memberJoinNo")) {
+			model.addAttribute("message", "회원 가입실패.\\n다시 회원가입 해주세요");
+			model.addAttribute("url", "/member/memberJoin");
+		}
+		else if(msgFlag.equals("memberLoginOk")) {
+			model.addAttribute("message", mid + "회원님 로그인 되셨습니다.");
+			model.addAttribute("url", "/member/memberMain");
+		}
+		else if(msgFlag.equals("memberLoginNo")) {
+			model.addAttribute("message", "로그인 실패~ 다시 로그인해 주세요.");
+			model.addAttribute("url", "/member/memberLogin");
+		}
+		
+		else if(msgFlag.equals("memberLogoutOk")) {
+			model.addAttribute("message", "로그아웃 되었습니다.");
+			model.addAttribute("url", "member/memberLogin");
+		}
+		else if(msgFlag.equals("pwdCheckNo")) {
+			model.addAttribute("message", "비밀번호가 틀립니다. 확인해 주세요.");
+			model.addAttribute("url", "member/pwdCheckForm/d");
+		}
+		else if(msgFlag.equals("pwdCheckNo")) {
+			model.addAttribute("message", "비밀번호가 틀립니다. 확인해 주세요.");
+			
+			model.addAttribute("url", "member/pwdCheckForm/d");
+		}
+		else if(msgFlag.equals("memberDeleteCheck"))	 {
+			model.addAttribute("message", "탈퇴처리되었습니다.");
+			session.invalidate();
+			model.addAttribute("url", "member/memberLogin");
+		}
+		
 		return "include/message";
 	}
 }

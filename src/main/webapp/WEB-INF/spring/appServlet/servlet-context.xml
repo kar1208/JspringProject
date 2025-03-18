@@ -33,4 +33,9 @@
 		<beans:property name="defaultEncoding" value="utf-8"></beans:property>
 	</beans:bean>
 	
+	<!-- Spring Security의 BCryptPasswordEncoder 객체를 Bean으로 등록 -->
+	<beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		
+	</beans:bean>
+	
 </beans:beans>

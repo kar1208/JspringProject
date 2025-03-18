@@ -27,5 +27,10 @@ create table member (
 	unique key (mid)
 );
 
+select * from member;
 
 drop table member;
+
+select * from member;
+
+update member set level=0 where mid='admin';
