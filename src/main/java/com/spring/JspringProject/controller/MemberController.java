@@ -1,5 +1,7 @@
 package com.spring.JspringProject.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
@@ -16,9 +18,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -233,7 +238,8 @@ public class MemberController {
 	}
 	// 회원 탈퇴(정보수정)신청을 위한 비밀번호 확인 
 	@RequestMapping(value = "/pwdCheck/{pwdFlag}", method = RequestMethod.GET)
-	public String pwdCheckGet() {
+	public String pwdCheckGet(Model model , @PathVariable String pwdFlag) {
+		model.addAttribute("pwdFlag", pwdFlag);
 		return "member/pwdCheckForm";
 	}
 	
@@ -243,15 +249,60 @@ public class MemberController {
 		String mid = (String) session.getAttribute("sMid");
 		//MemberVo vo = memberService.getMemberIdCheck(mid);
 		if(!passwordEncoder.matches(pwd, memberService.getMemberIdCheck(mid).getPwd())) {
-			return "redirect:/message/pwdCheckNo";
+			if(pwdFlag.equals("d")) return "redirect:/message/pwdCheckNo"; 
+			else if(pwdFlag.equals("p")) return "redirect:/message/pwdCheckNoP"; 
+
 		}
 		
 		if(pwdFlag.equals("d")) {
 			memberService.setMemberDeleteCheck(mid);
 			return "redirect:/message/memberDeleteCheck";
 		}
+		else if(pwdFlag.equals("p")) {
+			return "member/memberPassCheckForm";
+		}
+		
 		
 		return "";
+	}
+	
+	// 전체 회원 보기
+	@GetMapping("/memberList")
+	public String memberListGet(Model model,
+		@RequestParam(name="level", defaultValue = "99", required = false )	int level) {
+		List<MemberVo> vos =  memberService.getMemberList(level);
+		model.addAttribute("vos", vos);
+		
+		return "member/memberList";
+	}
+	// 비밀번호 변경처리
+	@PostMapping("/pwdChange")
+	public String pwdChangeGet(HttpSession session, String pwd) {
+		String mid = (String) session.getAttribute("sMid");
+		pwd = passwordEncoder.encode(pwd);
+		int res = memberService.setMemberPwdChange(mid, pwd);
+		
+		if(res != 0) return "redirect:/message/pwdChangeOk";
+		else return "redirect:/message/pwdChangeNo";
+	}
+	
+	// 아이디 찾기
+	@RequestMapping(value="/midSearchForm", method = RequestMethod.GET)
+	public String midSearchFormGet() {
+	
+		return "member/midSearchForm";
+	}
+	
+	@PostMapping("/midSearchForm")
+	public String midSearchFormPost(Model model , @RequestParam("email") String email) {
+		List<MemberVo> vos = memberService.getMemberSearchEmail(email); 
+		
+		if(vos.isEmpty()) return "해당 이메일로 등록된 아이디가 없습니다";
+		else {
+			model.addAttribute("vos", vos);
+			return "member/midSearch";
+		}
+	
 	}
 	
 }

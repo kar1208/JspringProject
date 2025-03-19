@@ -20,6 +20,12 @@ public interface MemberDao {
 
 	MemberVo getMemberNickCheck(@Param("nickName") String nickName);
 
+	MemberVo getMemberIdxSearch(@Param("idx") int idx);
+
+	int setMemberPwdChange(@Param("mid") String mid,@Param("pwd") String pwd);
+
+	List<MemberVo> getMemberSearchEmail(@Param("email") String email);
+
 
 
 

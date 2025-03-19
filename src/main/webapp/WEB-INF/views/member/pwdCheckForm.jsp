@@ -15,6 +15,7 @@
 <p><br/></p>
 <div class="container">
   <h2 class="text-center">비밀번호 확인</h2>
+  <c:if test="${pwdFlag == 'p'}"><div class="text-center text-danger mb-2">(<b>현재 비밀번호를 입력하세요.</b>)</div></c:if>
   <form name="myform" method="post">
 	  	<table class="table table-bordered text-center">
 	      <tr>

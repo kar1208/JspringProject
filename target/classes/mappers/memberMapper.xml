@@ -6,6 +6,10 @@
   	select * from member where mid = #{mid};
   </select>
   
+  <select id="getMemberIdxSearch" resultType="com.spring.JspringProject.vo.MemberVo">
+  	select * from member where idx = #{idx};
+  </select>
+  
   <select id="getMemberNickCheck" resultType="com.spring.JspringProject.vo.MemberVo">
   	select * from member where nickName = #{nickName};
   </select>
@@ -13,12 +17,17 @@
   
   <select id="getMemberList" resultType="com.spring.JspringProject.vo.MemberVo">
   	<if test="level != 99">
-  		select * from member where level=#{level} order by idx desc;
+  		select *, datediff(now(), startDate) as deleteDiff from member where level=#{level} order by idx desc;
   	</if>
   	<if test="level == 99">
-  		select * from member order by idx desc;
+  		select *, datediff(now(), startDate) as deleteDiff from member order by idx desc;
   	</if>
   </select>
+  
+  <select id="getMemberSearchEmail" resultType="com.spring.JspringProject.vo.MemberVo">
+  	select mid from member where email = #{email};
+  </select>
+  
   
   
   
@@ -38,6 +47,12 @@
   </update>
   
   <update id="setMemberDeleteCheck">
-    update member set level=999, userDel='OK' where mid = #{mid};
+    update member set level=999, userDel='OK',startDate=now() where mid = #{mid};
   </update>
+  
+  <update id="setMemberPwdChange">
+  	update member set pwd = #{pwd} where mid = #{mid};
+  </update>
+  
+  
 </mapper>

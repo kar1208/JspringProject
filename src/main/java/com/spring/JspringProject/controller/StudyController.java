@@ -17,13 +17,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.JspringProject.service.MemberService;
 import com.spring.JspringProject.service.StudyService;
 import com.spring.JspringProject.vo.MailVo;
+import com.spring.JspringProject.vo.MemberVo;
 
 //@RestController
 @Controller
 @RequestMapping("/study")
 public class StudyController {
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@Autowired
 	private StudyService studyService;
@@ -143,4 +148,22 @@ public class StudyController {
 		
 		return "redirect:/message/mailSendOk";
 	}	
+	
+	// 모달연습
+	@RequestMapping(value = "modal/modalForm", method = RequestMethod.GET)
+	public String modalFormGet(Model model) {
+		model.addAttribute("name", "홍길동");
+		model.addAttribute("age", "22");
+		model.addAttribute("address", "서울");
+		
+		//관리자의 정보를 front에 따로 출력하시오.
+		MemberVo vo = memberService.getMemberIdCheck("admin");
+		model.addAttribute("vo", vo);
+		
+		List<MemberVo> vos = memberService.getMemberList(99);  //99는 전체자료 조회
+		model.addAttribute("vos", vos);
+		
+		return "study/modal/modalForm";
+	}
+	
 }

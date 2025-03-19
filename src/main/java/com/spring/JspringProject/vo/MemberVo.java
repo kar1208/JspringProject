@@ -31,6 +31,7 @@ public class MemberVo {
 	private String startDate;
 	private String lastDate;
 	
+	private int deleteDiff;
 	
 	public static MemberVo getMemberIdCheck(String mid2) {
 		return null;

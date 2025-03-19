@@ -9,8 +9,7 @@
   <title>memberLogin.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <script>
-  	'use strict';
- 
+
   </script>
   <style>
   	a {text-decoration: none}
@@ -25,39 +24,27 @@
 <jsp:include page="/WEB-INF/views/include/slide2.jsp" /> 
 <p><br/></p>
 <div class="container">
-	<form name="myform" method="post">
+	<form name="myform" method="post" action="${ctp}/member/midSearchForm">
 	  	<table class="table table-bordered text-center">
 	      <tr>
-	        <td colspan="2"><font size="5">로 그 인</font></td>
+	        <td colspan="2"><font size="5">아이디 찾기</font></td>
 	      </tr>
 	      <tr>
-	        <th>아이디</th>
-	        <td><input type="text" name="mid" id="mid" value="${mid}" placeholder="아이디를 입력하세요" autofocus required class="form-control" /></td>
-	      </tr>
-	      <tr>
-	        <th>비밀번호</th>
-	        <td><input type="password" name="pwd" id="pwd" value="1234" placeholder="비밀번호를 입력하세요." required class="form-control" /></td>
+	        <th>이메일주소</th>
+	        <td><input type="email" name="email" id="email" placeholder="가입할 때 등록한 이메일주소를 입력하세요." autofocus required class="form-control" /></td>
 	      </tr>
 	      <tr>
 	        <td colspan="2">
-	          <input type="submit" value="로그인" class="btn btn-success me-2"/>
+	          <input type="submit" value="아이디찾기" class="btn btn-warning me-2"/>
 	          <input type="reset" value="다시입력" class="btn btn-warning me-2"/>
-	          <input type="button" value="회원가입" onclick="location.href='${ctp}/member/memberJoin';" class="btn btn-primary"/>
+	          <input type="button" value="뒤로가기" onclick="location.href='${ctp}/member/memberLogin';" class="btn btn-primary"/><br/>
+	          <div id = "result"></div>
 	        </td>
 	      </tr>
-	    </table>
-	    <table class="table table-borderless p-0">
-	    	<tr>
-	    		<td class="text-center">
-	    			<input type="checkbox" name="idSave" checked /> 아이디저장 &nbsp;&nbsp;&nbsp;
-	    			[<a href="${ctp}/member/midSearchForm">아이디 찾기</a>] / 
-	    			[<a href="javascript:pwdSearch()">비밀번호 찾기</a>] 
-	    		</td>
-	    	</tr>
 	    </table>
 	  </form> 
 </div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
-</html>
+</html></html>

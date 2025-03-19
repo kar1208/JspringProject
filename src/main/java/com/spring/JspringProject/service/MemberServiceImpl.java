@@ -67,4 +67,19 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.getMemberNickCheck(nickName);
 	}
 
+	@Override
+	public MemberVo getMemberIdxSearch(int idx) {
+		return memberDao.getMemberIdxSearch(idx);
+	}
+
+	@Override
+	public int setMemberPwdChange(String mid, String pwd) {
+		return memberDao.setMemberPwdChange(mid, pwd);
+	}
+
+	@Override
+	public List<MemberVo> getMemberSearchEmail(String email) {
+		return memberDao.getMemberSearchEmail(email);
+	}
+
 }

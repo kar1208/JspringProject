@@ -10,4 +10,9 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	AdminDao adminDao;
+
+	@Override
+	public int setMemberLevelChange(int level, int idx) {
+		return adminDao.setMemberLevelChange(level, idx);
+	}
 }

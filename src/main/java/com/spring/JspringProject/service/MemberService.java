@@ -22,6 +22,12 @@ public interface MemberService {
 
 	MemberVo getMemberNickCheck(String nickName);
 
+	MemberVo getMemberIdxSearch(int idx);
+
+	int setMemberPwdChange(String mid, String pwd);
+
+	List<MemberVo> getMemberSearchEmail(String email);
+
 	
 
 }
