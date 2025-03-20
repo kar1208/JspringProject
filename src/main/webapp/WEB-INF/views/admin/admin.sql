@@ -54,7 +54,8 @@ select datediff('2025-3-18', now());
 
 
 -- 2. 뒤에서 앞을 뺌
-select timestampdiff(minute, '2025-3-19 15:30:0', now());
+select timestampdiff(minute, '2025-3-18 15:30:0', now());
+select timestampdiff(day, '2025-3-18 15:30:0', now());
 
 select mid 아이디,startDate 가입일 from member;
 
@@ -65,3 +66,14 @@ select mid 아이디,startDate 가입일, datediff(now(), startDate) as 지난�
 
 select mid ,startDate , datediff(now(), startDate) as deleteDiff from member where userDel='OK';
 select mid 아이디,startDate 가입일, timestampdiff(day, startDate, now()) as 지난날수 from member;
+
+select * from board;
+select date_format(wDate, '%y-%m-%d') from board; /* %y : 2자리 연도 */
+select date_format(wDate, '%y/%m/%d') from board; /* %y : 2자리 연도 */
+select date_format(wDate, '%y년%m월%d일') from board; /* %y : 2자리 연도 */
+select date_format(wDate, '%Y-%m-%d') from board; /* %Y : 4자리 연도 */
+select date_format(wDate, '%Y-%m-%d %w') from board; /* %w : 요일(숫자: 월-1)*/
+select date_format(wDate, '%Y-%m-%d %W') from board; /* %w : 요일(영어로)*/
+select date_format(wDate, '%Y-%M-%d') from board;	/* %M : 월이 영어로 */
+select date_format(wDate, '%Y-%m-%d %p %h:%i') from board; /* %p : AM/PM, %h:12시간제 */
+select date_format(wDate, '%Y-%m-%d %H:%i') from board; /* %H : 24시간제 */

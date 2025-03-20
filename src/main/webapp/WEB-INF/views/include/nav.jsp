@@ -46,7 +46,7 @@
 	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
 	        <a href="${ctp}/member/memberList" class="w3-bar-item w3-button">회원리스트</a>
 	        <a href="${ctp}/member/pwdCheck/p" class="w3-bar-item w3-button">비밀번호변경</a>
-	        <a href="${ctp}/member/memberUpdate" class="w3-bar-item w3-button">회원정보수정</a>
+	        <a href="${ctp}/member/pwdCheck/u" class="w3-bar-item w3-button">회원정보수정</a>
 	        <a href="javascript:deleteCheck()" class="w3-bar-item w3-button">회원탈퇴</a>
 	        <c:if test="${sLevel == 0}"><a href="${ctp}/admin/adminMain" class="w3-bar-item w3-button">관리자메뉴</a></c:if>
 	      </div>

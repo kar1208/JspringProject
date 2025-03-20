@@ -26,6 +26,8 @@ public interface MemberDao {
 
 	List<MemberVo> getMemberSearchEmail(@Param("email") String email);
 
+	int setMemberUpdateOk(@Param("vo") MemberVo vo);
+
 
 
 

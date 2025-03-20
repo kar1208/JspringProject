@@ -28,6 +28,8 @@ public interface MemberService {
 
 	List<MemberVo> getMemberSearchEmail(String email);
 
+	int setMemberUpdateOk(MemberVo vo);
+
 	
 
 }

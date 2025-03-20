@@ -183,6 +183,10 @@ public class MessageController {
 			model.addAttribute("message", "비밀번호가 틀립니다. 확인해 주세요.");
 			model.addAttribute("url", "member/pwdCheckForm/p");
 		}
+		else if(msgFlag.equals("pwdCheckNop")) {
+			model.addAttribute("message", "비밀번호가 틀립니다. 확인해 주세요.");
+			model.addAttribute("url", "member/pwdCheckForm/u");
+		}
 		else if(msgFlag.equals("memberDeleteCheck"))	 {
 			model.addAttribute("message", "탈퇴처리되었습니다.");
 			session.invalidate();
@@ -196,6 +200,29 @@ public class MessageController {
 		else if(msgFlag.equals("pwdChangeNo"))	 {
 			model.addAttribute("message", "회원 비밀번호를 변경 실패~~~");
 			model.addAttribute("url", "member/pwdCheck/p");
+		}
+		else if(msgFlag.equals("nickCheckNo"))	 {
+			model.addAttribute("message", "이미 사용중인 닉네임입니다.");
+			model.addAttribute("url", "member/memberUpdate");
+		}
+		else if(msgFlag.equals("memberUpdateOk"))	 {
+			model.addAttribute("message", "회원 정보가 수정되었습니다.");
+			model.addAttribute("url", "member/memberMain");
+		}
+		else if(msgFlag.equals("memberUpdateNo"))	 {
+			model.addAttribute("message", "회원 정보 수정실패~~");
+			model.addAttribute("url", "member/memberUpdate");
+		}
+		
+		
+		
+		else if(msgFlag.equals("boardInputOk"))	 {
+			model.addAttribute("message", "게시글 등록되었습니다.");
+			model.addAttribute("url", "member/boardList");
+		}
+		else if(msgFlag.equals("boardInputNo"))	 {
+			model.addAttribute("message", "게시글 등록실패");
+			model.addAttribute("url", "member/boardInput");
 		}
 		
 		return "include/message";

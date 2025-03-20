@@ -248,22 +248,23 @@ public class MemberController {
 	public String pwdCheckPost(HttpSession session, @PathVariable String pwdFlag, String pwd) {
 		String mid = (String) session.getAttribute("sMid");
 		//MemberVo vo = memberService.getMemberIdCheck(mid);
+		// 비밀번호 확인후 비밀번호가 잘못되었을경우의 메세지 처리('d/p/u')
 		if(!passwordEncoder.matches(pwd, memberService.getMemberIdCheck(mid).getPwd())) {
 			if(pwdFlag.equals("d")) return "redirect:/message/pwdCheckNo"; 
 			else if(pwdFlag.equals("p")) return "redirect:/message/pwdCheckNoP"; 
+			else if(pwdFlag.equals("u")) return "redirect:/message/pwdCheckNoU"; 
 
 		}
 		
+		// 비밀번호가 맞으면 해당 항목 처리할수 있도록 보내준다.
 		if(pwdFlag.equals("d")) {
 			memberService.setMemberDeleteCheck(mid);
 			return "redirect:/message/memberDeleteCheck";
 		}
-		else if(pwdFlag.equals("p")) {
-			return "member/memberPassCheckForm";
-		}
+		else if(pwdFlag.equals("p")) return "member/memberPassCheckForm";
+		else if(pwdFlag.equals("u")) return "redirect:/member/memberUpdate";
 		
-		
-		return "";
+		return "${ctp}/";
 	}
 	
 	// 전체 회원 보기
@@ -286,13 +287,13 @@ public class MemberController {
 		else return "redirect:/message/pwdChangeNo";
 	}
 	
-	// 아이디 찾기
+	// 아이디 찾기폼 보기
 	@RequestMapping(value="/midSearchForm", method = RequestMethod.GET)
 	public String midSearchFormGet() {
 	
 		return "member/midSearchForm";
 	}
-	
+	// 아이디 찾기
 	@PostMapping("/midSearchForm")
 	public String midSearchFormPost(Model model , @RequestParam("email") String email) {
 		List<MemberVo> vos = memberService.getMemberSearchEmail(email); 
@@ -303,6 +304,38 @@ public class MemberController {
 			return "member/midSearch";
 		}
 	
+	}
+	
+	// 회원 정보 수정폼 보기
+	@RequestMapping(value="/memberUpdate" , method = RequestMethod.GET)
+	public String memberUpdateGet(Model model, HttpSession session ) {
+		String mid = (String) session.getAttribute("sMid");
+		MemberVo vo = memberService.getMemberIdCheck(mid);
+		model.addAttribute("vo",vo);
+		
+		return "/member/memberUpdate";
+	}
+	
+	// 회원 정보 수정처리
+	@RequestMapping(value="/memberUpdate" , method = RequestMethod.POST)
+	public String memberUpdatePost(HttpSession session, MemberVo vo, MultipartFile fName) {
+		//닉네임 체크(수정시에는 새로 세션에 저장처리한다.)
+		String nickName = (String) session.getAttribute("sNickName");
+		if (memberService.getMemberNickCheck(vo.getNickName()) !=null && !nickName.equals(vo.getNickName())) {
+			return "redirect:/message/nickCheckNo";
+		}
+		// 회원 사진 처리
+		if(fName.getOriginalFilename() != null && !fName.getOriginalFilename().equals("")) {
+			vo.setPhoto(memberService.fileUpload(fName, vo.getMid(), vo.getPhoto()));
+		}
+		
+		int res = memberService.setMemberUpdateOk(vo);
+		
+		if(res != 0) {
+			session.setAttribute("sNickName", vo.getNickName());
+			return "redirect:/message/memberUpdateOk";
+		}
+		else return "redirect:/message/memberUpdateNo";
 	}
 	
 }
