@@ -10,6 +10,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>boardContent.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <script>
+  	'use strict';
+  	
+  	function delCheck() {
+  		let ans = confirm("현재 게시글을 삭제 하시겠습니까?");
+  		if(ans) location.href = "boardDelete?idx=${vo.idx}";
+  	}
+  </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
@@ -40,10 +48,10 @@
   	</tr>
   </table>
   <div class="row">
-  	<div class="col"><input type="button" value="돌아가기" onclick="location.href='boardList'" class="btn btn-info" /></div>
-  	<c:if test="${sNickName == vo.nickName}">
+  	<div class="col"><input type="button" value="돌아가기" onclick="location.href='boardList?pag=${pag}&pageSize=${pageSize}'" class="btn btn-info" /></div>
+  	<c:if test="${sNickName == vo.nickName || sLevel == 0}">
 			<div class="col text-end">
-				<input type="button" value="수정하기" onclick="location.href='boardUpdate'" class="btn btn-warning" />
+				<c:if test="${sNickName == vo.nickName}"><input type="button" value="수정하기" onclick="location.href='boardUpdate?idx=${vo.idx}'" class="btn btn-warning" /></c:if>
 				<input type="button" value="삭제하기" onclick="delCheck()" class="btn btn-danger" />
 			</div>
   	</c:if>	

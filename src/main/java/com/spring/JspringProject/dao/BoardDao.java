@@ -18,4 +18,8 @@ public interface BoardDao {
 
 	int setBoardInputOk(@Param("vo") BoardVo vo);
 
+	int setBoardDelete(@Param("idx") int idx);
+
+	int setBoardUpdate(@Param("vo") BoardVo vo);
+
 }
