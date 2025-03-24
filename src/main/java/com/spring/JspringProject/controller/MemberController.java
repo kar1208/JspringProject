@@ -88,6 +88,7 @@ public class MemberController {
 			session.setAttribute("sLevel", vo.getLevel());
 			session.setAttribute("strLevel", strLevel);
 			
+			
 			// 2.쿠키
 			if(idSave != null && idSave.equals("on")) {
 				Cookie cookieMid = new Cookie("cMid", vo.getMid());
@@ -109,7 +110,6 @@ public class MemberController {
 				}
 			}
 			
-			
 			// 3. 기타처리 : 방문카운트로 10포인트 증정(단, 1일 50포인트까지만 제한처리)
 			int point = 10;
 			
@@ -120,7 +120,6 @@ public class MemberController {
 			return "redirect:/message/memberLoginNo";
 			
 		}
-		
 	}
 	
 	

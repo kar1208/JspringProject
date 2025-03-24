@@ -16,7 +16,34 @@ create table board (
 	foreign key (mid) references member(mid)
 );
 
-select * from board;
+select * from board order by idx desc;
 
 insert into board values (default,'admin','관리맨','게시판 서비스를 시작합니다.','좋은글 많이 올려주세요','192.168.50.53',default,default,default,default,default)
 insert into board values (default,'atom','아톰맨','아톰 다녀갑니다.','앞으로 잘 부탁드립니다.','192.168.50.43',default,default,default,default,default)
+
+select count(*) from board where title like concat('%','그림','%');
+select * from board;
+
+-- 이전글(preVo)
+select idx,title from board where idx < 5 order by idx desc limit 1;
+-- 다음글(nextVo)
+select idx,title from board where idx > 5 order by idx limit 1;
+
+/* 댓글 달기 */
+create table boardReply(
+	idx 			int not null auto_increment, 						/* 댓글 고유번호 */
+	boardIdx 	int not null,														/* 원본글의 고유번호 - 외래키로 지정 */
+	mid				varchar(20) not null,										/* 댓글올린이 아이디*/
+	nickName	varchar(20) not null,										/* 댓글올린이 닉네임 */
+	content		text not null,													/* 댓글 내용 */
+	hostIp		varchar(50) not null,										/* 댓글 올린 pc의 고유 IP*/
+	wDate			datetime default now(), 								/* 댓글 올린 날짜/시간 */
+	primary key(idx),
+	foreign key(boardIdx) references board(idx) 
+	on update cascade
+	on delete cascade
+);
+
+select * from boardReply;
+ 
+insert into boardReply values (default,23,'admin','관리맨','댓글 연습 중','192.168.50.1',default);

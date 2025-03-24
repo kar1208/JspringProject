@@ -49,12 +49,16 @@
   			<td colspan="2" class="text-center">
   				<input type="submit" value="수정하기" class="btn btn-success me-2">
   				<input type="reset" value="다시입력" class="btn btn-warning me-2">
-  				<input type="button" value="돌아가기" onclick="location.href='boardContent?idx=${vo.idx}';" class="btn btn-info me-2">
+  				<input type="button" value="돌아가기" onclick="location.href='boardContent?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}';" class="btn btn-info me-2">
   			</td>
   		</tr>
   	</table>
   	<input type="hidden" name="hostIp" value="${pageContext.request.remoteAddr}"/>
   	<input type="hidden" name="mid" value="${sMid}"/>
+  	<input type="hidden" name="pag" value="${pag}"/>
+  	<input type="hidden" name="pageSize" value="${pageSize}"/>
+  	<%-- <input type="hidden" name="search" value="${search}"/>
+  	<input type="hidden" name="searchString" value="${searchString}"/> --%>
   </form>
 </div>
 <p><br/></p>

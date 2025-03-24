@@ -16,8 +16,13 @@ public class MessageController {
 	@RequestMapping(value = "/message/{msgFlag}", method = RequestMethod.GET)
 	public String getMessage(Model model, @PathVariable String msgFlag, HttpSession session, 
 			HttpServletRequest request, 
-				@RequestParam(name="mid", defaultValue = "", required = false)String mid,
-				@RequestParam(name="idx", defaultValue = "", required = false)int idx
+				@RequestParam(name="mid", defaultValue = "", required = false) String mid,
+				@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+				@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+				@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+				@RequestParam(name="search", defaultValue = "", required = false) String search,
+				@RequestParam(name="searchString", defaultValue = "", required = false) String searchString
+				
 			) {
 		
 		if(msgFlag.equals("userInputOk")) {
@@ -236,11 +241,11 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("boardUpdateOk"))	 {
 			model.addAttribute("message", "게시글 수정 성공");
-			model.addAttribute("url", "board/boardContent?idx="+idx);
+			model.addAttribute("url", "board/boardContent?pag="+pag+"&pageSize="+pageSize+"&search="+search+"&searchString="+searchString+"&idx="+idx);
 		}
 		else if(msgFlag.equals("boardUpdateNo"))	 {
 			model.addAttribute("message", "게시글 수정 실패");
-			model.addAttribute("url", "board/boardContent?idx="+idx);
+			model.addAttribute("url", "board/boardContent?idx="+idx+"&pag="+pag+"&pageSize="+pageSize+"&search="+search+"&searchString="+searchString+"&idx="+idx);
 		}
 		
 		return "include/message";

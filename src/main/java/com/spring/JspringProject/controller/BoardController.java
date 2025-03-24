@@ -1,8 +1,7 @@
 package com.spring.JspringProject.controller;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,25 +11,31 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.JspringProject.common.Pagination;
 import com.spring.JspringProject.service.BoardService;
+import com.spring.JspringProject.vo.BoardReplyVo;
 import com.spring.JspringProject.vo.BoardVo;
+import com.spring.JspringProject.vo.PageVo;
 
 @Controller
 @RequestMapping("/board")
 public class BoardController {
-	
+
 	@Autowired
 	BoardService boardService;
 	
+	@Autowired
+	Pagination pagination;
 	
-	
+	// 게시판 리스트 목록 보기
+	/*
 	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
 	public String boardListGet(Model model,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
 		) {
-		System.out.println("pageSize : " + pageSize);
 		int totRecCnt = boardService.getBoardTotRecCnt();
 		int totPage = (totRecCnt % pageSize) == 0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;
@@ -52,6 +57,27 @@ public class BoardController {
 		
 		return "board/boardList";
 	}
+	*/
+	
+	
+	// 게시판 리스트 목록 보기(new)
+	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
+	public String boardListGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="search", defaultValue = "", required = false) String search,
+			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString
+			
+		) {
+		PageVo pageVo = pagination.getTotRecCnt(pag,pageSize,"board",search,searchString);  // (페이지번호,한 페이지사이즈(분량),section(class),part,검색ㅇ
+
+		List<BoardVo> vos = boardService.getBoardList(pageVo.getStartIndexNo() , pageVo.getPageSize(), search, searchString);
+		
+		model.addAttribute("pageVo", pageVo);
+		model.addAttribute("vos", vos);
+		
+		return "board/boardList";
+	}
 	
 	// 게시글 입력폼 보기
 	@RequestMapping(value = "/boardInput", method = RequestMethod.GET)
@@ -64,91 +90,166 @@ public class BoardController {
 	public String boardInputPost(BoardVo vo) {
 		if(vo.getContent().indexOf("src=\"/") != -1) boardService.imgCheck(vo.getContent());
 		
-		vo.setContent(vo.getContent().replace("/data/ckeditor/", "/data/board/"));
+		vo.setContent(vo.getContent().replace("/data/ckeditor/", "/data/board/"));		
 		
-		
-		int res = boardService.setBoardInputOk(vo) ;
+		int res = boardService.setBoardInputOk(vo);
 		
 		if(res != 0) return "redirect:/message/boardInputOk";
 		else return "redirect:/message/boardInputNo";
-		
 	}
 	
-	
 	@RequestMapping(value = "/boardContent", method = RequestMethod.GET)
-	public String boardContentGet(Model model, int idx, int pag, int pageSize, HttpSession session) {
-		// 글 조회수 증가처리(재로그인 전까지 같은 게시물 조회수 증가(중복)불가)  
-		@SuppressWarnings("unchecked")
-		Set<Integer> viewedBoards = (Set<Integer>)session.getAttribute("viewedBoards");
+	public String boardContentGet(Model model, HttpSession session,int idx, 
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="search", defaultValue = "", required = false) String search,
+			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString
+			) {
+		// 글 조회수 증가처리
+		//boardService.setBoardReadNumPlus(idx);
 		
-		if(viewedBoards == null) {
-			// 세션에 조회 목록이 없으면 새로생성
-			viewedBoards = new HashSet<>();
-			session.setAttribute("viewedBoards", viewedBoards);
-		} // 현재 게시글이 세션에 등록되어있지 않으면 조회수 증가(contains)는 요소포함여부를 확인한다.
-		if(!viewedBoards.contains(idx)) {  
+		// 중복방지 
+		List<String> boardNum = (List<String>) session.getAttribute("sDuplicate");
+		if(boardNum == null) boardNum = new ArrayList<String>();
+		String imsiNum = "boardGood" + idx;
+		if(!boardNum.contains(imsiNum)) {
 			boardService.setBoardReadNumPlus(idx);
-			viewedBoards.add(idx);  //세션에 현재 게시글 아이디 추가
+			boardNum.add(imsiNum);
 		}
+		session.setAttribute("sDuplicate", boardNum);
+		
+	
+		
 		
 		BoardVo vo = boardService.getBoardContent(idx);
+		
 		model.addAttribute("vo", vo);
 		model.addAttribute("pag", pag);
 		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("search", search);
+		model.addAttribute("searchString", searchString);
+		
+		// 이전글/다음글 가져오기
+		BoardVo preVo = boardService.getPreNextSearch(idx, "pre");
+		BoardVo nextVo = boardService.getPreNextSearch(idx, "next");
+		model.addAttribute("preVo", preVo);
+		model.addAttribute("nextVo", nextVo);
+		
+		// 댓글 추가 
+		List<BoardReplyVo> replyVos = boardService.getBoardReply(idx);
+		model.addAttribute("replyVos", replyVos);
+		
 		return "board/boardContent";
 	}
-	// 게시글 삭제 처리 
-	@RequestMapping(value="/boardDelete" , method = RequestMethod.GET)
+	
+	
+	// 게시글 삭제 처리
+	@RequestMapping(value = "/boardDelete", method = RequestMethod.GET)
 	public String boardDeleteGet(int idx) {
 		// 게시글에 사진이 존재한다면 실제 파일을 board폴더에서 삭제시킨다.
 		BoardVo vo = boardService.getBoardContent(idx);
 		if(vo.getContent().indexOf("src=\"/") != -1) boardService.imgDelete(vo.getContent());
 		
-		// 사진작업 완료후 DB에 저장된 실제 정보레코드를 삭제처리한다.
+		// 사진작업완료후 DB에 저장된 실제 정보레코드를 삭제처리한다.
 		int res = boardService.setBoardDelete(idx);
 		
 		if(res != 0) return "redirect:/message/boardDeleteOk";
 		else return "redirect:/message/boardDeleteNo?idx="+idx;
 	}
 	
-	
 	// 게시글 수정 폼 보기
-	@RequestMapping(value="/boardUpdate", method = RequestMethod.GET)
-	public String boardUpdateGet(Model model, int idx) {
-		// 수정처리시, 수정폼을 호출할 때 현재게시글에 그림이 존재한다면 그림파일 모두를 ckeditor폴더로 복사시켜둔다.
+	@RequestMapping(value = "/boardUpdate", method = RequestMethod.GET)
+	public String boardUpdateGet(Model model, int idx,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="search", defaultValue = "", required = false) String search,
+			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString		
+			) {
+		// 수정처리시, 수정품을 호출할때 현재게시글에 그림이 존재한다면 그림파일 모두를 ckeditor폴더로 복사시켜둔다.
 		BoardVo vo = boardService.getBoardContent(idx);
 		if(vo.getContent().indexOf("src=\"/") != -1) boardService.imgBackup(vo.getContent());
 		model.addAttribute("vo", vo);
+		model.addAttribute("pag", pag);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("search", search);
+		model.addAttribute("searchString", searchString);
+		
 		
 		
 		return "board/boardUpdate";
 	}
 	
-	// 게시글 수정 처리
-	@RequestMapping(value="/boardUpdate", method = RequestMethod.POST)
-	public String boardUpdatePost(Model model, BoardVo vo) {
+	// 게시글 수정처리
+	@RequestMapping(value = "/boardUpdate", method = RequestMethod.POST)
+	public String boardUpdatePost(Model model, BoardVo vo,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="search", defaultValue = "", required = false) String search,
+			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString
+		) {
 		// 수정된 자료가 원본자료와 완전히 동일하다면 수정할 필요가 없다.
-		BoardVo dbvo = boardService.getBoardContent(vo.getIdx());
+		BoardVo dbVo = boardService.getBoardContent(vo.getIdx());
 		
 		// content의 내용이 조금이라도 변경이 되었다면 내용을 수정처리한것이기에, 그림파일 처리유무를 결정한다.
-		if(!dbvo.getContent().equals(vo.getContent())) {
-			// 1.기존 board폴더의 그림이 존재했다면, 원본그림을 모두 삭제처리한다.
-			if(dbvo.getContent().indexOf("src=\"/") != -1) boardService.imgDelete(dbvo.getContent());
+		if(!dbVo.getContent().equals(vo.getContent())) {
+			// 1.기존 board폴더의 그림이 존재했다면,원본그림을 모두 삭제처리한다.
+			if(dbVo.getContent().indexOf("src=\"/") != -1) boardService.imgDelete(dbVo.getContent());
 			
 			// 2.삭제후 'board'폴더를 'ckeditor'폴더로 경로 변경
 			vo.setContent(vo.getContent().replace("/data/board/", "/data/ckeditor/"));
 			
-			// 1,2번 작업을 마치면 처음 글을 올릴때와 똑같은 상황으로 처리하면 된다.
+			// 1,2번 작업을 마치면 처음 글을 올릴때와 똑 같은 상황으로 처리하면 된다.
 			if(vo.getContent().indexOf("src=\"/") != -1) boardService.imgCheck(vo.getContent());
 			
-			// 이미지 복사작업을 모두 마치면(ckeditor폴더에서 board폴더로) 'ckeditor -> board'로 다시 변경한다.
+			// 이미지 복사작업을 모두 마치면(ckeditor폴더에서 board폴더로) 'ckeditor -> board' 변경한다.
 			vo.setContent(vo.getContent().replace("/data/ckeditor/", "/data/board/"));
 		}
 		int res = boardService.setBoardUpdate(vo);
 		
+		model.addAttribute("pag", pag);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("search", search);
+		model.addAttribute("searchString", searchString);
 		
 		if(res != 0) return "redirect:/message/boardUpdateOk";
 		else return "redirect:/message/boardUpdateNo?idx="+vo.getIdx();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value="/boardGoodCheck1", method = RequestMethod.POST)
+	public String boardGoodCheck1Post(HttpSession session, int idx) {
+		//return boardService.setBoardGoodCheck1(idx) + "";
+		String res = "0";
+		
+		// 중복방지
+		List<String> goodNum = (List<String>) session.getAttribute("sDuplicate");
+		if(goodNum == null) goodNum = new ArrayList<String>();
+		String imsiNum = "boardGood" + idx;
+		if(!goodNum.contains(imsiNum)) {
+			boardService.setBoardGoodCheck1(idx);
+			goodNum.add(imsiNum);
+			res = "1";
+		}
+		session.setAttribute("sDuplicate", goodNum);
+		return res;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value="/boardGoodCheck2", method = RequestMethod.POST)
+	public String boardGoodCheck2Post(HttpSession session, int idx, int goodCnt) {
+		return boardService.setBoardGoodCheck2(idx, goodCnt) + "";
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value="/boardReplyInput", method = RequestMethod.POST)
+	public String boardReplyInputPost(BoardReplyVo vo) {
+		return boardService.setBoardReplyInput(vo) + "";
+		
 	}
 	
 	

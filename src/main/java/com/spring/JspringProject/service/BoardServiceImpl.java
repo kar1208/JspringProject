@@ -15,6 +15,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.JspringProject.dao.BoardDao;
+import com.spring.JspringProject.vo.BoardReplyVo;
 import com.spring.JspringProject.vo.BoardVo;
 
 @Service
@@ -29,8 +30,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVo> getBoardList(int startIndexNo, int pageSize) {
-		return boardDao.getBoardList(startIndexNo, pageSize);
+	public List<BoardVo> getBoardList(int startIndexNo, int pageSize, String search, String searchString) {
+		return boardDao.getBoardList(startIndexNo, pageSize,search, searchString);
 	}
 
 	@Override
@@ -50,14 +51,15 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int setBoardDelete(int idx) {
+		
 		return boardDao.setBoardDelete(idx);
 	}
 
 	@Override
 	public void imgCheck(String content) {
-		//		 0         1         2         3	        4         5
-		//     012345678901234567890123456789012345678901234567890123456789
-		//<img src="/JspringProject/data/ckeditor/250321122349_farming-7117714_960_720.jpg"
+		//      0         1         2         3         4         4
+		//      01234567890123456789012345678901234567890123456789012345678
+		// <img src="/JspringProject/data/ckeditor/250321140356_2503.jpg" style="height:854px; width:1280px" />
 		
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
@@ -78,7 +80,7 @@ public class BoardServiceImpl implements BoardService {
 			else nextImg = nextImg.substring(nextImg.indexOf("src=\"/") + position);
 		}
 	}
-	
+
 	// 파일 복사처리
 	private void fileCopyCheck(String origFilePath, String copyFilePath) {
 		try {
@@ -133,10 +135,10 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void imgBackup(String content) {
-			//	 0         1         2         3	        4         5
-		//     012345678901234567890123456789012345678901234567890123456789
-		//<img src="/JspringProject/data/board/250321122349_farming-7117714_960_720.jpg"
-		//<img src="/JspringProject/data/ckeditor/250321122349_farming-7117714_960_720.jpg"
+		//      0         1         2         3         4         4
+		//      01234567890123456789012345678901234567890123456789012345678
+		// <img src="/JspringProject/data/board/250321140356_2503.jpg" style="height:854px; width:1280px" />
+		// <img src="/JspringProject/data/ckeditor/250321140356_2503.jpg" style="height:854px; width:1280px" />
 		
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
@@ -162,4 +164,30 @@ public class BoardServiceImpl implements BoardService {
 	public int setBoardUpdate(BoardVo vo) {
 		return boardDao.setBoardUpdate(vo);
 	}
+
+	@Override
+	public int setBoardGoodCheck1(int idx) {
+		return boardDao.setBoardGoodCheck1(idx);
+	}
+
+	@Override
+	public int setBoardGoodCheck2(int idx, int goodCnt) {
+		return boardDao.setBoardGoodCheck2(idx, goodCnt);
+	}
+
+	@Override
+	public BoardVo getPreNextSearch(int idx, String preNext) {
+		return boardDao.getPreNextSearch(idx, preNext);
+	}
+
+	@Override
+	public List<BoardReplyVo> getBoardReply(int idx) {
+		return boardDao.getBoardReply(idx);
+	}
+
+	@Override
+	public int setBoardReplyInput(BoardReplyVo vo) {
+		return boardDao.setBoardReplyInput(vo);
+	}
+	
 }
