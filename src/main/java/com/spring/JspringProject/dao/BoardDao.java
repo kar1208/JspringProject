@@ -35,4 +35,8 @@ public interface BoardDao {
 
 	int setBoardReplyInput(@Param("vo") BoardReplyVo vo);
 
+	int setBoardReplyDelete(@Param("idx") BoardReplyVo idx);
+
+	int setBoardReplyUpdateCheckOk(@Param("vo") BoardReplyVo vo);
+
 }

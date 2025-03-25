@@ -70,6 +70,7 @@
 	      <td class="text-start">
 	      	<a href="boardContent?idx=${vo.idx}&pag=${pageVo.pag}&pageSize=${pageVo.pageSize}&search=${pageVo.search}&searchString=${pageVo.searchString}">${vo.title}</a>
 	      	<c:if test="${vo.dateDiff == 0}"><img src="${ctp}/images/new.gif" /></c:if>
+	      	<c:if test="${vo.replyCnt != 0}">(${vo.replyCnt})</c:if> 
 	      </td>
 	      <td>${vo.nickName}</td>
 	      <td>${vo.WDate}</td>

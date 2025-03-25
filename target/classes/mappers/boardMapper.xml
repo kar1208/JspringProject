@@ -11,7 +11,9 @@
   </select>
   
   <select id="getBoardList" resultType="com.spring.JspringProject.vo.BoardVo">
-  	select *,datediff(wDate, now()) as dateDiff from board <if test='search !=""'>where ${search} like concat('%',#{searchString},'%')</if> order by idx desc limit #{startIndexNo},#{pageSize};
+  	select *,datediff(wDate, now()) as dateDiff, 
+  	(select count(idx) from boardReply where boardIdx=b.idx) as replyCnt
+  	 from board b <if test='search !=""'>where ${search} like concat('%',#{searchString},'%')</if> order by idx desc limit #{startIndexNo},#{pageSize};
   </select>
   
   <select id="getBoardContent" resultType="com.spring.JspringProject.vo.BoardVo">
@@ -65,6 +67,10 @@
   	update board set good = good + #{goodCnt} where idx = #{idx};
   </update>
   
+  <update id="setBoardReplyUpdateCheckOk">
+  	update boardReply set content = #{vo.content}, hostIp = #{vo.hostIp} where idx = #{vo.idx};
+  </update>
+  
   
   
   
@@ -73,4 +79,10 @@
   <delete id="setBoardDelete">
   	delete from board where idx = #{idx};
   </delete>
+  
+  <delete id="setBoardReplyDelete">
+  	delete from boardReply where idx = #{idx};
+  </delete>
+  
+  
 </mapper>

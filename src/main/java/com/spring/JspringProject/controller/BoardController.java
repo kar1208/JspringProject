@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.JspringProject.common.Pagination;
+import com.spring.JspringProject.service.AdminService;
 import com.spring.JspringProject.service.BoardService;
 import com.spring.JspringProject.vo.BoardReplyVo;
 import com.spring.JspringProject.vo.BoardVo;
+import com.spring.JspringProject.vo.ComplaintVo;
 import com.spring.JspringProject.vo.PageVo;
 
 @Controller
@@ -28,6 +30,9 @@ public class BoardController {
 	
 	@Autowired
 	Pagination pagination;
+	
+	@Autowired
+	AdminService adminService;
 	
 	// 게시판 리스트 목록 보기
 	/*
@@ -236,7 +241,6 @@ public class BoardController {
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value="/boardGoodCheck2", method = RequestMethod.POST)
 	public String boardGoodCheck2Post(HttpSession session, int idx, int goodCnt) {
@@ -244,12 +248,34 @@ public class BoardController {
 		
 	}
 	
-	@SuppressWarnings("unchecked")
+	// 댓글 입력처리
 	@ResponseBody
 	@RequestMapping(value="/boardReplyInput", method = RequestMethod.POST)
 	public String boardReplyInputPost(BoardReplyVo vo) {
 		return boardService.setBoardReplyInput(vo) + "";
-		
+	}
+	// 댓글 삭제처리
+	@ResponseBody
+	@RequestMapping(value="/boardReplyDelete", method = RequestMethod.POST)
+	public String boardReplyDeletePost(BoardReplyVo idx) {
+		return boardService.setBoardReplyDelete(idx) + "";
+	}
+	
+	// 댓글 수정처리
+	@ResponseBody
+	@RequestMapping(value="/boardReplyUpdateCheckOk", method = RequestMethod.POST)
+	public String boardReplyUpdateCheckOkPost(BoardReplyVo vo) {
+		return boardService.setBoardReplyUpdateCheckOk(vo) + "";
+	}
+	
+	// 신고글 처리
+	@ResponseBody
+	@RequestMapping(value="/boardComplaintInput", method = RequestMethod.POST)
+	public String boardComplaintInputPost(ComplaintVo vo) {
+		int res = 0;
+		res = adminService.setBoardComplaintInput(vo);
+		if(res != 0) adminService.setBoardTableComplaintOk(vo.getPartIdx());
+		return res + "";
 	}
 	
 	

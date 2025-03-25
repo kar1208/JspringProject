@@ -37,4 +37,9 @@ public interface BoardService {
 
 	int setBoardReplyInput(BoardReplyVo vo);
 
+	int setBoardReplyDelete(BoardReplyVo idx);
+
+	int setBoardReplyUpdateCheckOk(BoardReplyVo vo);
+
+
 }

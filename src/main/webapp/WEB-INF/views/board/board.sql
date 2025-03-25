@@ -24,6 +24,10 @@ insert into board values (default,'atom','아톰맨','아톰 다녀갑니다.','
 select count(*) from board where title like concat('%','그림','%');
 select * from board;
 
+-- 댓글의 개수를 원본글과 함께 출력 (서브쿼리)
+select *,(select count(idx) from boardReply where boardIdx=b.idx) as replyCnt from board b;
+
+
 -- 이전글(preVo)
 select idx,title from board where idx < 5 order by idx desc limit 1;
 -- 다음글(nextVo)
