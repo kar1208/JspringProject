@@ -268,8 +268,17 @@
     		},
     		error : function() { alert("전송오류!"); }
     	});
-    	
-    	
+    }
+    
+    // 업로드 시킬 사진 미리보기
+    function imgCheck(e) {
+    	if(e.files && e.files[0]) {
+    		let reader = new FileReader();
+    		reader.onload = function(e) {
+					document.getElementById("photoDemo").src = e.target.result;
+    		}
+    		reader.readAsDataURL(e.files[0]);
+    	}
     }
   </script>
 </head>
@@ -338,6 +347,9 @@
     <div class="text-center">  
       <div id="demo"></div>
     </div>
+    
+    <!-- 선택입력사항 -->
+    <div class="mb-2" id="viewCheckBtn" style="display:none" onclick="viewBtnCheck()"><input type="checkbox" name="viewBtn" id="viewBtn" checked />선택입력항목 보이기/가리기</div>
     <table class="table table-bordered text-center border-secondary-subtle" id="addContent" style="display:none">
       <tr>
         <th class="bg-secondary-subtle">생일</th>
@@ -435,7 +447,8 @@
       <tr>
         <th class="bg-secondary-subtle">회원사진</th>
         <td>
-          <input type="file" name="fName" id="file" class="form-control" />
+          <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control" />
+          <div><img id="photoDemo" width="100px" /></div>
         </td>
       </tr>
     </table>

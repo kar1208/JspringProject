@@ -162,7 +162,7 @@
     	
     	let query = {
     			part : 'board',
-    			partIdx: ${vo.idx},
+    			boardIdx: ${vo.idx},
     			cpMid : '${sMid}',
     			cpContent: claimContent
     	}
@@ -196,153 +196,161 @@
 <p><br/></p>
 <div class="container">
   <h2 class="text-center">글 내용 보기</h2>
-  <table class="table table-bordered text-center border-secondary-subtle">
-  	<tr>
-  		<th class="table-secondary">글쓴이</th>
-  		<td>${vo.nickName}</td>
-  		<th class="table-secondary">글쓴날짜</th>
-  		<td>${fn:substring(vo.WDate,0,19)}</td>
-  	</tr>
-  	<tr>
-  		<th class="table-secondary">글 조회수</th>
-  		<td>${vo.readNum}</td>
-  		<th class="table-secondary">접속IP</th>
-  		<td>${vo.hostIp}</td>
-  	</tr>
-  	<tr>
-  		<th class="table-secondary">글 제목</th>
-  		<td colspan="3" class="text-start">${vo.title}
-  			(<a href="javascript:goodCheck1()" title="좋아요">💖</a>${vo.good})
-  			(<a href="javascript:goodCheck2(1)" title="좋아요">👍</a>
-  			<a href="javascript:goodCheck2(-1)" title="싫어요">👎</a>(${vo.good}))
-  		</td>
-  	</tr>
-  	<tr>
-  		<th class="table-secondary">글 내용</th>
-  		<td colspan="3" style="height:250px" class="text-start">${fn:replace(vo.content, newLine, "<br/>")}</td>
-  	</tr>
-  </table>
-  <div class="row">
+  <c:if test="${vo.complaint == 'HI'}">
+  	<hr class="border border-dark">
+  	<h3 class="text-center text-danger">해당 게시글은 신고된 글입니다.</h3>
+  	<hr class="border border-dark">
   	<div class="col"><input type="button" value="돌아가기" onclick="location.href='boardList?pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}'" class="btn btn-info" /></div>
-  	<div class="col">
-  		<c:if test="${sMid != vo.mid && vo.complaint == 'NO'}"><a href="#" data-bs-toggle="modal" data-bs-target="#myModal" class="btn btn-danger">신고하기</a></c:if>
-  		<c:if test="${vo.complaint == 'OK'}">현재 게시글은 신고된 글입니다.</c:if>
-  	</div>
-  	<c:if test="${sNickName == vo.nickName || sLevel == 0}">
-			<div class="col text-end">
-				<c:if test="${sNickName == vo.nickName}"><input type="button" value="수정하기" onclick="location.href='boardUpdate?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}'" class="btn btn-warning" /></c:if>
-				<input type="button" value="삭제하기" onclick="delCheck()" class="btn btn-danger" />
-			</div>
-  	</c:if>	
-  </div>
-  <hr/>
-  <!-- 이전글/다음글 -->
-   <div class="row">
-  	<div class="col">
-  		<c:if test="${!empty nextVo.title}">
-  		☝ <a href="boardContent?idx=${nextVo.idx}">다음글 : ${nextVo.title}</a><br/>
-  		</c:if>
-  		<c:if test="${!empty preVo.title}">
-  		👇 <a href="boardContent?idx=${preVo.idx}">이전글 : ${preVo.title}</a><br/>
-  		</c:if>
-  	</div>
-  </div>
-  <hr/>
-  
-  <!-- 댓글철(리스트/입력) -->
-  <!-- 댓글 리스트 -->
-  <table class="table table-hover text-center">
-  	<tr class="table-secondary">
-  		<th>작성자</th>
-  		<th>댓글내용</th>
-  		<th>댓글일자</th>
-  		<th>접속IP</th>
-  	</tr>
-  	<c:forEach var="replyVo" items="${replyVos}" varStatus="st" >
-  		<tr>
-  			<td>${replyVo.nickName}
-  				<c:if test="${sMid == replyVo.mid || sLevel == 0}">
-	  				 (<a href="javascript:replyDeleteCheck(${replyVo.idx})" title="댓글삭제">X</a>)
-	  				 <c:if test="${sMid == replyVo.mid}">
-	  				 	(<a href="javascript:replyUpdateCheck(${replyVo.idx})" title="댓글수정">√</a>)
-	  				 </c:if>
-  				</c:if>
-  			</td>
-  			<td class="text-start">${fn:replace(replyVo.content,newLine,"<br/>")}</td>
-  			<td>${fn:substring(replyVo.WDate,0,10)}</td>
-  			<td>${replyVo.hostIp}</td>
-  		</tr>
-  		<!-- 아래로 댓글 수정 폼 보기 -->
-  		<tr>
-  			<td colspan="4">
-  				<div id="replyUpdateForm${replyVo.idx}" class="replyUpdateForm">
-					  <form name="replyUpdateForm">
-					  	<table class="table text-center">
-					  		<tr>
-					  			<td class="text-start" style="width:85%">
-					  				글내용 : 
-					  				<textarea rows="4" name="content" id="content${replyVo.idx}" class="form-control">${replyVo.content}</textarea>
-					  			</td>
-					  			<td style="width:15%"><br/>
-					  				<p>작성자 : ${sNickName}</p>
-					  				<p>
-					  					<a href="javascript:replyUpdateCheckOk(${replyVo.idx})" class="badge bg-primary">댓글수정</a>
-					  					<a href="javascript:replyUpdateViewClose(${replyVo.idx})" class="badge bg-warning ">창닫기</a>
-					  				</p>
-					  			</td>
-					  		</tr>
-					  	</table>
-					  </form>
-					</div>
-  			</td>
-  		</tr>
-  	</c:forEach>
-  </table>
-  <!-- 댓글 입력창 -->
-  <form name="replyForm">
-  	<table class="table table-center">
-  		<tr>
-  			<td class="text-start" style="width:85%">
-  				글내용 : 
-  				<textarea rows="4" name="content" id="content" class="form-control"></textarea>
-  			</td>
-  			<td style="width:15%">
-  				<p>작성자 : ${sNickName}</p>
-  				<p><input type="button" value="댓글달기" onclick="replyCheck()" class="btn btn-info btn-sm"></p>
-  			</td>
-  		</tr>
-  	</table>
-  </form>
-</div>
-
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">현재 게시글을 신고합니다.</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <h5>신고사유 선택</h5>
-        <form name="modalForm">
-        	<div><input type="radio" name="claim" id="claim1" value="광고,홍보,영리목적"/> 광고,홍보,영리목적</div>
-          <div><input type="radio" name="claim" id="claim2" value="욕설,비방,차별,혐오"/> 설,비방,차별,혐오</div>
-          <div><input type="radio" name="claim" id="claim3" value="불법정보"/> 불법정보</div>
-          <div><input type="radio" name="claim" id="claim4" value="음란,청소년유해"/> 음란,청소년유해</div>
-          <div><input type="radio" name="claim" id="claim5" value="개인정보노출,유포,거래"/> 개인정보노출,유포,거래</div>
-          <div><input type="radio" name="claim" id="claim6" value="도배,스팸"/> 도배,스팸</div>
-          <div><input type="radio" name="claim" id="claim7" value="기타" onclick="etcShow()"/> 기타</div>
-          <div id="etc"><textarea rows="2" id="claimTxt" class="form-control" style="display:none"></textarea></div>
-          <hr/>
-          <input type="button" value="확인" onclick="claimCheck()" class="btn btn-success form-control" />
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
+  </c:if>
+  <c:if test="${vo.complaint != 'HI'}">
+	  <table class="table table-bordered text-center border-secondary-subtle">
+	  	<tr>
+	  		<th class="table-secondary">글쓴이</th>
+	  		<td>${vo.nickName}</td>
+	  		<th class="table-secondary">글쓴날짜</th>
+	  		<td>${fn:substring(vo.WDate,0,19)}</td>
+	  	</tr>
+	  	<tr>
+	  		<th class="table-secondary">글 조회수</th>
+	  		<td>${vo.readNum}</td>
+	  		<th class="table-secondary">접속IP</th>
+	  		<td>${vo.hostIp}</td>
+	  	</tr>
+	  	<tr>
+	  		<th class="table-secondary">글 제목</th>
+	  		<td colspan="3" class="text-start">${vo.title}
+	  			(<a href="javascript:goodCheck1()" title="좋아요">💖</a>${vo.good})
+	  			(<a href="javascript:goodCheck2(1)" title="좋아요">👍</a>
+	  			<a href="javascript:goodCheck2(-1)" title="싫어요">👎</a>(${vo.good}))
+	  		</td>
+	  	</tr>
+	  	<tr>
+	  		<th class="table-secondary">글 내용</th>
+	  		<td colspan="3" style="height:250px" class="text-start">${fn:replace(vo.content, newLine, "<br/>")}</td>
+	  	</tr>
+	  </table>
+	  <div class="row">
+	  	<div class="col"><input type="button" value="돌아가기" onclick="location.href='boardList?pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}'" class="btn btn-info" /></div>
+	  	<div class="col">
+	  		<c:if test="${sMid != vo.mid && vo.complaint == 'NO'}"><a href="#" data-bs-toggle="modal" data-bs-target="#myModal" class="btn btn-danger">신고하기</a></c:if>
+	  		<c:if test="${vo.complaint == 'OK'}">현재 게시글은 신고된 글입니다.</c:if>
+	  	</div>
+	  	<c:if test="${sNickName == vo.nickName || sLevel == 0}">
+				<div class="col text-end">
+					<c:if test="${sNickName == vo.nickName}"><input type="button" value="수정하기" onclick="location.href='boardUpdate?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}'" class="btn btn-warning" /></c:if>
+					<input type="button" value="삭제하기" onclick="delCheck()" class="btn btn-danger" />
+				</div>
+	  	</c:if>	
+	  </div>
+	  <hr/>
+	  <!-- 이전글/다음글 -->
+	   <div class="row">
+	  	<div class="col">
+	  		<c:if test="${!empty nextVo.title}">
+	  		☝ <a href="boardContent?idx=${nextVo.idx}">다음글 : ${nextVo.title}</a><br/>
+	  		</c:if>
+	  		<c:if test="${!empty preVo.title}">
+	  		👇 <a href="boardContent?idx=${preVo.idx}">이전글 : ${preVo.title}</a><br/>
+	  		</c:if>
+	  	</div>
+	  </div>
+	  <hr/>
+	  
+	  <!-- 댓글철(리스트/입력) -->
+	  <!-- 댓글 리스트 -->
+	  <table class="table table-hover text-center">
+	  	<tr class="table-secondary">
+	  		<th>작성자</th>
+	  		<th>댓글내용</th>
+	  		<th>댓글일자</th>
+	  		<th>접속IP</th>
+	  	</tr>
+	  	<c:forEach var="replyVo" items="${replyVos}" varStatus="st" >
+	  		<tr>
+	  			<td>${replyVo.nickName}
+	  				<c:if test="${sMid == replyVo.mid || sLevel == 0}">
+		  				 (<a href="javascript:replyDeleteCheck(${replyVo.idx})" title="댓글삭제">X</a>)
+		  				 <c:if test="${sMid == replyVo.mid}">
+		  				 	(<a href="javascript:replyUpdateCheck(${replyVo.idx})" title="댓글수정">√</a>)
+		  				 </c:if>
+	  				</c:if>
+	  			</td>
+	  			<td class="text-start">${fn:replace(replyVo.content,newLine,"<br/>")}</td>
+	  			<td>${fn:substring(replyVo.WDate,0,10)}</td>
+	  			<td>${replyVo.hostIp}</td>
+	  		</tr>
+	  		<!-- 아래로 댓글 수정 폼 보기 -->
+	  		<tr>
+	  			<td colspan="4">
+	  				<div id="replyUpdateForm${replyVo.idx}" class="replyUpdateForm">
+						  <form name="replyUpdateForm">
+						  	<table class="table text-center">
+						  		<tr>
+						  			<td class="text-start" style="width:85%">
+						  				글내용 : 
+						  				<textarea rows="4" name="content" id="content${replyVo.idx}" class="form-control">${replyVo.content}</textarea>
+						  			</td>
+						  			<td style="width:15%"><br/>
+						  				<p>작성자 : ${sNickName}</p>
+						  				<p>
+						  					<a href="javascript:replyUpdateCheckOk(${replyVo.idx})" class="badge bg-primary">댓글수정</a>
+						  					<a href="javascript:replyUpdateViewClose(${replyVo.idx})" class="badge bg-warning ">창닫기</a>
+						  				</p>
+						  			</td>
+						  		</tr>
+						  	</table>
+						  </form>
+						</div>
+	  			</td>
+	  		</tr>
+	  	</c:forEach>
+	  </table>
+	  <!-- 댓글 입력창 -->
+	  <form name="replyForm">
+	  	<table class="table table-center">
+	  		<tr>
+	  			<td class="text-start" style="width:85%">
+	  				글내용 : 
+	  				<textarea rows="4" name="content" id="content" class="form-control"></textarea>
+	  			</td>
+	  			<td style="width:15%">
+	  				<p>작성자 : ${sNickName}</p>
+	  				<p><input type="button" value="댓글달기" onclick="replyCheck()" class="btn btn-info btn-sm"></p>
+	  			</td>
+	  		</tr>
+	  	</table>
+	  </form>
+	</div>
+	
+	<!-- The Modal -->
+	<div class="modal fade" id="myModal">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title">현재 게시글을 신고합니다.</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	      <div class="modal-body">
+	        <h5>신고사유 선택</h5>
+	        <form name="modalForm">
+	        	<div><input type="radio" name="claim" id="claim1" value="광고,홍보,영리목적"/> 광고,홍보,영리목적</div>
+	          <div><input type="radio" name="claim" id="claim2" value="욕설,비방,차별,혐오"/> 설,비방,차별,혐오</div>
+	          <div><input type="radio" name="claim" id="claim3" value="불법정보"/> 불법정보</div>
+	          <div><input type="radio" name="claim" id="claim4" value="음란,청소년유해"/> 음란,청소년유해</div>
+	          <div><input type="radio" name="claim" id="claim5" value="개인정보노출,유포,거래"/> 개인정보노출,유포,거래</div>
+	          <div><input type="radio" name="claim" id="claim6" value="도배,스팸"/> 도배,스팸</div>
+	          <div><input type="radio" name="claim" id="claim7" value="기타" onclick="etcShow()"/> 기타</div>
+	          <div id="etc"><textarea rows="2" id="claimTxt" class="form-control" style="display:none"></textarea></div>
+	          <hr/>
+	          <input type="button" value="확인" onclick="claimCheck()" class="btn btn-success form-control" />
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+  </c:if>
 </div>
 
 <p><br/></p>

@@ -272,9 +272,10 @@ public class BoardController {
 	@ResponseBody
 	@RequestMapping(value="/boardComplaintInput", method = RequestMethod.POST)
 	public String boardComplaintInputPost(ComplaintVo vo) {
+		System.out.println("vo : " + vo);
 		int res = 0;
 		res = adminService.setBoardComplaintInput(vo);
-		if(res != 0) adminService.setBoardTableComplaintOk(vo.getPartIdx());
+		if(res != 0) adminService.setBoardTableComplaintOk(vo.getBoardIdx());
 		return res + "";
 	}
 	

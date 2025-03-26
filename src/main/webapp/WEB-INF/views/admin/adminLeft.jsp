@@ -28,7 +28,7 @@
   	<button class="accordion"><b>회원관리</b></button>
   	<div class="panel">
   		<p><a href="${ctp}/admin/member/memberList" target="adminContent">회원리스트</a></p>
-  		<p><a href="">신고리스트</a></p>
+  		<p><a href="${ctp}/admin/complaint/complaintList" target="adminContent">신고리스트</a></p>
   	</div>
 	</div>
   <hr/>

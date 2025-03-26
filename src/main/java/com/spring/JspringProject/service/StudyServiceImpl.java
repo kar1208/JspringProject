@@ -153,7 +153,8 @@ public class StudyServiceImpl implements StudyService {
 		}
 		return res;
 	}
-
+	
+	//전송된 파일을 서버로 저장처리
 	private void writeFile(MultipartFile fName, String sFileName) throws IOException {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		// 서버로부터 리퀘스트 객체를 사용하겠다라고 만들어주는 것

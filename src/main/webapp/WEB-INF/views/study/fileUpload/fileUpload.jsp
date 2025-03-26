@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -28,6 +29,45 @@
     	}
     	else myform.submit();
     }
+    
+    // 선택된 파일 서버에서 삭제처리
+    function fileDelete(file) {
+    	let ans = confirm("선택된 파일을 삭제하시겠습니까?");
+    	if(!ans) return false;
+    	
+    	$.ajax({
+    		url  : "${ctp}/study/fileUpload/fileDelete",
+    		type : "post",
+    		data : {file : file},
+    		success:function(res) {
+    			if(res != "0") {
+    				alert("파일이 삭제 되었습니다.");
+    				location.reload();
+    			}
+    			else alert("파일 삭제 실패~~");
+    		},
+    		error : function() { alert("전송오류!"); }
+    	});
+    }
+    
+    // 모든파일 삭제처리
+    function fileDeleteAll() {
+    	let ans = confirm("모든 파일을 삭제하시겠습니까?");
+    	if(!ans) return false;
+    	
+    	$.ajax({
+    		url  : "${ctp}/study/fileUpload/fileDeleteAll",
+    		type : "post",
+    		success:function(res) {
+    			if(res != "0") {
+    				alert("파일이 삭제 되었습니다.");
+    				location.reload();
+    			}
+    			else alert("파일 삭제 실패~~");
+    		},
+    		error : function() { alert("전송오류!"); }
+    	});
+    }
   </script>
 </head>
 <body>
@@ -48,6 +88,42 @@
       <input type="reset" value="다시선택" class="btn btn-warning"/>
     </p>
   </form>
+  <hr class="border border-dark"/>
+  <div id="uploadFile">
+  	<h3>서버에 저장된 파일정보(총 :${fn:length(files)} 개)</h3>
+  	<div class="row mb-3" >
+  		<div class="col">저장경로 : ${ctp}/resources/data/fileUpload/*.*</div>
+  		<div class="col text-end">
+  			<input type="button" value="폴더내 모든파일 삭제" onclick="fileDeleteAll()" class="btn btn-danger"/>
+  		</div>
+  	</div>
+  		<table class="table table-hover text-center">
+  			<tr class="table-secondary">
+  				<th>번호</th>
+  				<th>파일명</th>
+  				<th>파일형식</th>
+  				<th>비고</th>
+  			</tr>
+  			<c:forEach var="file" items="${files}" varStatus="st">
+  				<tr>
+  					<td>${st.count}</td>
+  					<td>${file}</td>
+  					<td>
+  						<c:set var="fNameArray" value="${fn:split(file,'.')}" /> <!-- abc.jpg -->
+  						<c:set var="extName" value="${fn:toLowerCase(fNameArray[1])}"/>
+  						<c:if test="${extName == 'jpg' || extName == 'png' || extName == 'gif'}"><img src="${ctp}/fileUpload/${file}" width="150px" ></c:if>
+  						<c:if test="${extName == 'jip'}">압축파일</c:if>
+  						<c:if test="${extName == 'ppt' || extName == 'pptx'}">파워포인트파일</c:if>
+  						<c:if test="${extName == 'xls' || extName == 'xlsx'}">엑셀파일</c:if>
+  						<c:if test="${extName == 'hwp' || extName == 'hwpx'}">한글 문서파일</c:if>
+  					</td>
+  					<td>
+  						<input type="button" value="삭제" onclick="fileDelete('${file}')" class="btn btn-danger btn-sm"/>
+  					</td>
+  				</tr>
+  			</c:forEach>
+  		</table>
+  </div>
 </div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />

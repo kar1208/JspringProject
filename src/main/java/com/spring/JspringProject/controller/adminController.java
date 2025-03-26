@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.JspringProject.service.AdminService;
 import com.spring.JspringProject.service.MemberService;
+import com.spring.JspringProject.vo.ComplaintVo;
 import com.spring.JspringProject.vo.MemberVo;
 
 @Controller
@@ -67,6 +68,20 @@ public class adminController {
 		MemberVo vo = memberService.getMemberIdxSearch(idx);
 		model.addAttribute("vo", vo);
 		return "admin/member/memberInfor";
+	}
+	
+	// 신고 리스트 출력
+	@RequestMapping(value = "/complaint/complaintList", method = RequestMethod.GET)
+	public String complaintListGet(Model model) {
+		List<ComplaintVo> vos = adminService.getComplaintList();
+		model.addAttribute("vos", vos);
+		return "admin/complaint/complaintList";
+	}
+	// 신고글 감추기/보이기
+	@ResponseBody
+	@RequestMapping(value = "/complaint/contentChange", method = RequestMethod.POST)
+	public String contentChangePost(int contentIdx, String contentSw) {
+		return adminService.setContentChange(contentIdx, contentSw) + "";
 	}
 	
 }
