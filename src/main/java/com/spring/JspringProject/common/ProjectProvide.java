@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,13 +31,20 @@ public class ProjectProvide {
 		fos.close();
 		
 	}
-
+	// 파일 삭제처리
 	public void deleteFile(String photo, String urlPath) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/"+urlPath+"/");
 		
 		File file = new File(realPath + photo);
 		if(file.exists()) file.delete();
+	}
+	
+	// 파일명 중복방지를 위한 처리
+	public String saveFileName(String oFileName) {
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+		return sdf.format(date) + "_" + oFileName;
 	}
 
 	

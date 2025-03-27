@@ -12,6 +12,7 @@
   <script>
     'use strict';
     
+    //파일 업로드 처리
     function fCheck() {
     	let fName = document.getElementById("fName").value;
     	let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
@@ -78,7 +79,7 @@
   <h2>파일 업로드 연습</h2>
   <form name="myform" method="post" enctype="multipart/form-data">
     <p>올린이 :
-      <input type="text" name="mid" value="admin" />
+      <input type="text" name="mid" value="${sMid}" readonly/>
     </p>
     <p>파일명 :
       <input type="file" name="fName" id="fName" class="form-control" accept=".jpg,.gif,.png,.zip,.ppt,.pptx,.hwp" />
@@ -86,6 +87,7 @@
     <p>
       <input type="button" value="파일업로드" onclick="fCheck()" class="btn btn-success"/>
       <input type="reset" value="다시선택" class="btn btn-warning"/>
+      <input type="button" value="멀티파일연습" onclick="location.href='multiFile';" class="btn btn-warning"/>
     </p>
   </form>
   <hr class="border border-dark"/>
@@ -111,14 +113,15 @@
   					<td>
   						<c:set var="fNameArray" value="${fn:split(file,'.')}" /> <!-- abc.jpg -->
   						<c:set var="extName" value="${fn:toLowerCase(fNameArray[1])}"/>
-  						<c:if test="${extName == 'jpg' || extName == 'png' || extName == 'gif'}"><img src="${ctp}/fileUpload/${file}" width="150px" ></c:if>
+  						<c:if test="${extName == 'jpg' || extName == 'png' || extName == 'gif'}"><a href="${ctp}/fileUpload/${file}" target="_blank" title="원본사진보기"><img src="${ctp}/fileUpload/${file}" width="150px" ></a></c:if>
   						<c:if test="${extName == 'jip'}">압축파일</c:if>
   						<c:if test="${extName == 'ppt' || extName == 'pptx'}">파워포인트파일</c:if>
   						<c:if test="${extName == 'xls' || extName == 'xlsx'}">엑셀파일</c:if>
   						<c:if test="${extName == 'hwp' || extName == 'hwpx'}">한글 문서파일</c:if>
   					</td>
   					<td>
-  						<input type="button" value="삭제" onclick="fileDelete('${file}')" class="btn btn-danger btn-sm"/>
+  						<input type="button" value="삭제" onclick="fileDelete('${file}')" class="btn btn-danger btn-sm"/><br/>
+  						<a href="${ctp}/fileUpload/${file}" download class="btn btn-primary btn-sm mt-2">다운로드</a>
   					</td>
   				</tr>
   			</c:forEach>

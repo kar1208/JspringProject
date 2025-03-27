@@ -248,6 +248,24 @@ public class MessageController {
 			model.addAttribute("url", "board/boardContent?idx="+idx+"&pag="+pag+"&pageSize="+pageSize+"&search="+search+"&searchString="+searchString+"&idx="+idx);
 		}
 		
+		
+		else if(msgFlag.equals("multiFileUploadOk"))	 {
+			model.addAttribute("message", "멀티파일 업로드 성공");
+			model.addAttribute("url", "study/fileUpload/multiFile");
+		}
+		else if(msgFlag.equals("multiFileUploadNo"))	 {
+			model.addAttribute("message", "멀티파일 업로드 실패");
+			model.addAttribute("url", "study/fileUpload/multiFile");
+		}
+		else if(msgFlag.equals("pdsDeleteOk"))	 {
+			model.addAttribute("message", "첨부파일이 삭제되었습니다.");
+			model.addAttribute("url", "pds/pdsList");
+		}
+		else if(msgFlag.equals("pdsDeleteNo"))	 {
+			model.addAttribute("message", "첨부파일 삭제 실패");
+			model.addAttribute("url", "pds/pdsList");
+		}
+		
 		return "include/message";
 	}
 }

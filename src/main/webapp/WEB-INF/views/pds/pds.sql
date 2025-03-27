@@ -11,9 +11,9 @@ create table pds (
 	content text,												/*업로드파일의 상세 설명*/
 	part 		varchar(20) not null,				/*자료실 파일 분류(학습/여행/음식/기타)*/
 	hostIp	varchar(30) not null,				/*업로드한 클라이언트 IP*/
+	openSw	char(3) default '공개',				/*업로드한 자료의 공개여부('공개'/'비공개')*/
 	fDate		datetime		default now(),				/*파일 업로드한 날짜*/
 	downNum	int default 0,							/*파일 다운로드 횟수*/
-	openSw	char(3) default '공개',				/*업로드한 자료의 공개여부('공개'/'비공개')*/
 	complaint	char(2) default 'NO',
 	primary key(idx),
 	foreign key(mid) references member(mid)

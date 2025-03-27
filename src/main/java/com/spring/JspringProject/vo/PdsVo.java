@@ -19,4 +19,8 @@ public class PdsVo {
 	private String openSw;
 	private String complaint;
 
+	private int dateDiff;
+	private int hourDiff;
+	private String[] files;
+	
 }

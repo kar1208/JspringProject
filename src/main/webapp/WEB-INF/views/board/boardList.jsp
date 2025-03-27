@@ -22,8 +22,6 @@
   	function pageSizeCheck() {
   		let pageSize = document.getElementById("pageSize").value;
   		location.href = "boardList?pageSize="+pageSize;
-  		
-  		
   	}
   </script>
 </head>
