@@ -1,7 +1,8 @@
 package com.spring.JspringProject.service;
 
-import java.io.File;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -13,8 +14,12 @@ public interface PdsService {
 
 	int setPdsInput(MultipartHttpServletRequest mFName, PdsVo vo);
 
-	int setPdsDelete(int idx, String fSName,PdsVo vo);
+	int setPdsDelete(int idx, String fSName, HttpServletRequest request);
 
-	List<File> getPdsFiles(String files);
+	int setPdsDownNumPlus(int idx);
+
+	PdsVo getPdsContent(int idx);
+
+	String pdsTotalDown(HttpServletRequest request, int idx);
 
 }

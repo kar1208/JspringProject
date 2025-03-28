@@ -77,3 +77,31 @@ select date_format(wDate, '%Y-%m-%d %W') from board; /* %w : 요일(영어로)*/
 select date_format(wDate, '%Y-%M-%d') from board;	/* %M : 월이 영어로 */
 select date_format(wDate, '%Y-%m-%d %p %h:%i') from board; /* %p : AM/PM, %h:12시간제 */
 select date_format(wDate, '%Y-%m-%d %H:%i') from board; /* %H : 24시간제 */
+
+
+/*리뷰테이블*/
+create table review (
+	idx int not null auto_increment, /*리뷰 고유번호*/
+	part varchar(10) not null, 				/*분야(borad, pds,....)*/ 
+	partIdx int not null,
+	mid varchar(20) not null,
+	nickName varchar(20) not null,
+	star		int not null default 0,
+	content text,
+	rDate		datetime default now(),
+	primary key(idx),
+	foreign key(mid) references member(mid)
+);
+/*리뷰에 댓글달기*/
+create table reviewReply(
+	replyIdx int not null auto_increment,			/* 댓글 고유번호 */
+	reviewPart varchar(10) not null,					/*분야(board, pds, ....)*/
+	reviewIdx int not null,										/* 원본글(부모글:리뷰)의 고유번호 */
+	replyMid varchar(20) not null,
+	replyNickName varchar(20) not null,
+	replyRDate datetime default now(),  			/* 댓글 올린 날짜 */
+	replyContent text not null,								/* 댓글 내용 */
+	primary key(replyIdx),
+	foreign key(reviewIdx) references review(idx),
+  foreign key(replyMid) references member(mid)
+);

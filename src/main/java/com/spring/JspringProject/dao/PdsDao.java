@@ -1,22 +1,25 @@
 package com.spring.JspringProject.dao;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.JspringProject.vo.PdsVo;
 
+//@Mapper
+//@Repository
 public interface PdsDao {
 
 	int getPdsTotRecCnt(@Param("part") String part);
 
-	List<PdsVo> getPdsList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("part") String part,@Param("search") String search,@Param("searchString") String searchString);
+	List<PdsVo> getPdsList(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("part") String part, @Param("search") String search, @Param("searchString") String searchString);
 
 	int setPdsInput(@Param("vo") PdsVo vo);
 
-	int setPdsDelete(@Param("idxList") int idx,@Param("vo") List<File> vo);
+	int setPdsDelete(@Param("idx") int idx);
 
-	List<File> getPdsFiles(@Param("files") String files);
+	int setPdsDownNumPlus(@Param("idx") int idx);
+
+	PdsVo getPdsContent(@Param("idx") int idx);
 
 }
