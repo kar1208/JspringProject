@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -227,4 +228,13 @@ public class StudyController {
 		return "study/modal/modalForm";
 	}
 	
+	// 인터넷 달력 연습
+	@RequestMapping(value = "/calendar", method = RequestMethod.GET)
+	public String calendarGet() {
+		studyService.getCalendar();
+		
+		return "study/calendar/calendar";
+	}
+	
+
 }
