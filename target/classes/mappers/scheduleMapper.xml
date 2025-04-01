@@ -3,7 +3,7 @@
 <mapper namespace="com.spring.JspringProject.dao.ScheduleDao">
   
   <select id="getScheduleList" resultType="com.spring.JspringProject.vo.ScheduleVo">
-  	select sDate,part from schedule where mid=#{mid} and date_format(sDate, '%Y-%m')=#{ym};
+  	select *,count(part) as partCnt from schedule where date_format(sDate, '%Y-%m') = '2025-03' and mid = 'admin' group by sDate,part order by sDate, part; 
   </select>
   
   

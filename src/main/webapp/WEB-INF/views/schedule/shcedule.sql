@@ -12,6 +12,14 @@ create table schedule (
 
 drop table schedule;
 desc schedule;
+
+select * from schedule where date_format(sDate, '%Y-%m') = '2025-03' and mid = 'admin'; 
+select * from schedule where date_format(sDate, '%Y-%m') = '2025-03' and mid = 'admin' order by sDate; 
+select * from schedule where date_format(sDate, '%Y-%m') = '2025-03' and mid = 'admin' order by sDate, part; 
+select *,count(part) as partCnt from schedule where date_format(sDate, '%Y-%m') = '2025-03' and mid = 'admin' group by sDate order by sDate, part; 
+select *,count(part) as partCnt from schedule where date_format(sDate, '%Y-%m') = '2025-03' and mid = 'admin' group by sDate,part order by sDate, part; 
+
+
 insert into schedule values (default, 'admin', '2025-03-17', '학습', '프로젝트 기획 초안');
 insert into schedule values (default, 'admin', '2025-03-30', '업무', 'B팀 프로젝트 초안 회의');
 insert into schedule values (default, 'admin', '2025-03-30', '학습', '크롤링 배우는 날');
