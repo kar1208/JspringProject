@@ -265,6 +265,18 @@ public class MessageController {
 			model.addAttribute("message", "첨부파일 삭제 실패");
 			model.addAttribute("url", "pds/pdsList");
 		}
+		else if(msgFlag.equals("wmMemberIdNo"))	 {
+			model.addAttribute("message", "가입된 회원정보가 없습니다.\\n다시 입력하세요.");
+			model.addAttribute("url", "webMessage/webMessage?mSw=0");
+		}
+		else if(msgFlag.equals("wmInputOk"))	 {
+			model.addAttribute("message", "메세지가 전송되었습니다.");
+			model.addAttribute("url", "webMessage/webMessage?mSw=3");
+		}
+		else if(msgFlag.equals("wmInputNo"))	 {
+			model.addAttribute("message", "메세지 전송 실패.");
+			model.addAttribute("url", "webMessage/webMessage?mSw=0");
+		}
 		
 		return "include/message";
 	}
