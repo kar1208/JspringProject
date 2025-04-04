@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.JspringProject.common.ProjectProvide;
 import com.spring.JspringProject.dao.StudyDao;
+import com.spring.JspringProject.vo.ChartVo;
 
 @Service
 public class StudyServiceImpl implements StudyService {
@@ -285,6 +286,11 @@ public class StudyServiceImpl implements StudyService {
 		request.setAttribute("prevLastDay", prevLastDay);
 		
 //		System.out.println("yy: " + yy + ", mm: " + (mm+1) + ", week : " + startWeek +" , lastDay : " + lastDay);
+	}
+
+	@Override
+	public List<ChartVo> getRecentlyVisitCount(int i) {
+		return studyDao.getRecentlyVisitCount(i);
 	}
 
 	
