@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>lineChartVisitCount.jsp</title>
-  <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
+  <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
     google.charts.load('current', {'packages':['line']});

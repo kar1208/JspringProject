@@ -2,10 +2,13 @@ package com.spring.JspringProject.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.JspringProject.vo.ChartVo;
+import com.spring.JspringProject.vo.QrCodeVo;
 
 public interface StudyService {
 
@@ -19,6 +22,16 @@ public interface StudyService {
 
 	void getCalendar();
 
+	String setQrCodeCreate(String mid);
+
 	List<ChartVo> getRecentlyVisitCount(int i);
+
+	String setQrCodeCreate(QrCodeVo vo);
+
+	String setQrCodeCreate2(QrCodeVo vo);
+
+	String setQrCodeCreate3(QrCodeVo vo);
+
+	QrCodeVo setQrCodeSearch(String qrCode);
 	
 }

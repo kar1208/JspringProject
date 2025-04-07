@@ -22,6 +22,9 @@
 	<resources mapping="/ckeditor/**" location="/resources/ckeditor/"></resources>
 	<resources mapping="/fileUpload/**" location="/resources/data/fileUpload/"></resources>
 	<resources mapping="/pds/**" location="/resources/data/pds/"></resources>
+	<resources mapping="/qrCode/**" location="/resources/data/qrCode/"></resources>
+	<resources mapping="/ticket/**" location="/resources/data/ticket/"></resources>
+	
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
