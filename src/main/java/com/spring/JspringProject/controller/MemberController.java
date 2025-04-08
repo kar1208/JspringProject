@@ -64,7 +64,7 @@ public class MemberController {
 		return "member/memberLogin";
 	}
 	
-	//로그인 처리
+	//일반로그인 처리
 	@RequestMapping(value="/memberLogin", method = RequestMethod.POST)
 	public String memberLoginPost(HttpSession session,
 			HttpServletRequest request, HttpServletResponse response,
@@ -87,6 +87,8 @@ public class MemberController {
 			session.setAttribute("sNickName", vo.getNickName());
 			session.setAttribute("sLevel", vo.getLevel());
 			session.setAttribute("strLevel", strLevel);
+			session.setAttribute("sLogin", "일반로그인");
+			
 			
 			
 			// 2.쿠키
@@ -120,6 +122,74 @@ public class MemberController {
 			return "redirect:/message/memberLoginNo";
 			
 		}
+	}
+	
+	
+	//카카오로그인 처리
+	@RequestMapping(value="/kakaoLogin", method = RequestMethod.GET)
+	public String kakaoLoginGet(HttpSession session,
+			HttpServletRequest request, HttpServletResponse response,
+			String nickName, String email, String accessToken) throws MessagingException {
+		session.setAttribute("sAccessToken", accessToken);
+		session.setAttribute("sLogin", "kakao");
+		// 카카오회원이 우리 회원인지를 조사한다.
+		MemberVo vo	= memberService.getMemberNickNameEmailCheck(nickName,email);
+		
+		// 카카오회원이 우리 회원이 아니었다면, 자동으로 우리회원으로 가입처리한다.
+		// 필수입력: 아이디, 닉네임, 성명(닉네임), 이메일, 비밀번호(임시비밀번호발급), 레벨(정회원:2)
+		// String newMember = "NO";   // 신규회원 OK, 기존회원 NO
+		if(vo == null) {
+			// 신규회원일경우에는 '아이디',임시 비밀번호 작업처리
+			String mid = email.substring(0, email.indexOf("@"));
+			session.setAttribute("sMid", mid);
+			
+			// 로그인 완료시 처리할 로직(1.신규회원으로 가입처리,2.세션 3.기타 설정값(방문포인트 등) 셋팅
+
+			MemberVo vo2	= memberService.getMemberIdCheck(mid);
+			if(vo2 != null) {
+				session.setAttribute("sMid", mid);
+				session.setAttribute("sNickName", nickName);
+				session.setAttribute("sLevel", 2);
+				session.setAttribute("strLevel", "정회원");
+				return "redirect:/message/memberLoginOk";
+			}
+			
+			
+			// 1.신규회원으로 가입처리
+			String pwd = UUID.randomUUID().toString().substring(0,8);
+			session.setAttribute("sImsiPwd", pwd);
+			
+			memberService.setKakaoMemberInput(mid, nickName, email, passwordEncoder.encode(pwd));
+			
+			vo = memberService.getMemberIdCheck(mid);
+			
+			// 신규로 발급받은 임시비밀번호를 메일로 전송처리한다.
+			mailSend(email, "임시비밀번호를 발송하였습니다.",	"임시비밀번호 : " + pwd);
+			
+			// 신규회원은 비밀번호를 새로발급하였기에 memberMain창에서 '개인정보/비밀번호'를 변경하라는 메세지를 지속적으로 뿌려준다.
+			session.setAttribute("sLoginNew", "OK");
+			//newMember = "OK";
+		}
+			
+		
+			// 1.세션
+			String strLevel = "";
+			if(vo.getLevel() == 0) strLevel = "관리자";
+			else if(vo.getLevel() == 1) strLevel = "우수회원";
+			else if(vo.getLevel() == 2) strLevel = "정회원";
+			else if(vo.getLevel() == 3) strLevel = "준회원";
+			
+			session.setAttribute("sMid", vo.getMid());
+			session.setAttribute("sNickName", vo.getNickName());
+			session.setAttribute("sLevel", vo.getLevel());
+			session.setAttribute("strLevel", strLevel);
+				
+				// 3. 기타처리 : 방문카운트로 10포인트 증정(단, 1일 50포인트까지만 제한처리)
+				int point = 10;
+				
+				memberService.setMemberInforUpdate(vo.getMid(), point);
+				return "redirect:/message/memberLoginOk?mid="+vo.getMid();
+
 	}
 	
 	

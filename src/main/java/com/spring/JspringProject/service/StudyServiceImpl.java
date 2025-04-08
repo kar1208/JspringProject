@@ -30,6 +30,7 @@ import com.spring.JspringProject.common.ProjectProvide;
 import com.spring.JspringProject.dao.StudyDao;
 import com.spring.JspringProject.vo.ChartVo;
 import com.spring.JspringProject.vo.QrCodeVo;
+import com.spring.JspringProject.vo.TransactionVo;
 
 @Service
 public class StudyServiceImpl implements StudyService {
@@ -373,6 +374,11 @@ public class StudyServiceImpl implements StudyService {
 	@Override
 	public QrCodeVo setQrCodeSearch(String qrCode) {
 		return studyDao.setQrCodeSearch(qrCode);
+	}
+
+	@Override
+	public int setTransactionUserInput(TransactionVo vo) {
+		return studyDao.setTransactionUserInput(vo);
 	}
 
 

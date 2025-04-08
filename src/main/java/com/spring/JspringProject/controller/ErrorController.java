@@ -64,7 +64,7 @@ public class ErrorController {
 	}
 	
 	
-	// NullPointerException 오류 발생시 처리하는곳
+	// NumberFormatException 오류 발생시 처리하는곳
 	@RequestMapping(value="/errorNumberFormatException", method = RequestMethod.GET)
 	public String errorNumberFormatExceptionGet() {
 		return "errorPage/errorNumberFormat";

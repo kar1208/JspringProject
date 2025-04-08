@@ -21,7 +21,8 @@ public class MessageController {
 				@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 				@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
 				@RequestParam(name="search", defaultValue = "", required = false) String search,
-				@RequestParam(name="searchString", defaultValue = "", required = false) String searchString
+				@RequestParam(name="searchString", defaultValue = "", required = false) String searchString,
+				@RequestParam(name="tempFlag", defaultValue = "", required = false) String tempFlag
 				
 			) {
 		
@@ -277,6 +278,23 @@ public class MessageController {
 			model.addAttribute("message", "메세지 전송 실패.");
 			model.addAttribute("url", "webMessage/webMessage?mSw=0");
 		}
+		else if(msgFlag.equals("transactionUserInputOk"))	 {
+			model.addAttribute("message", "user 회원 저장 완료");
+			model.addAttribute("url", "study/validator/validatorForm");
+		}
+		else if(msgFlag.equals("transactionUserInputNo"))	 {
+			model.addAttribute("message", "user 회원 저장 실패");
+			model.addAttribute("url", "study/validator/validatorForm");
+		}
+		else if(msgFlag.equals("backEndCheckNo"))	 {
+			String str = "";
+			if(tempFlag.equals("midSizeNo")) str = "아이디 길이를 확인하세요";
+			else if(tempFlag.equals("nameEmpty")) str = "성명을 확인하세요";
+			else if(tempFlag.equals("ageRangeNo")) str = "나이 범위를 확인하세요";
+			model.addAttribute("message", "저장 실패~~"+str+"~를 확인해 보세요(BackEndCheck");
+			model.addAttribute("url", "study/validator/validatorForm?tempFlag");
+		}
+
 		
 		return "include/message";
 	}

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.spring.JspringProject.vo.ChartVo;
 import com.spring.JspringProject.vo.QrCodeVo;
+import com.spring.JspringProject.vo.TransactionVo;
 
 public interface StudyDao {
 
@@ -14,5 +15,7 @@ public interface StudyDao {
 	void setQrCodeCreate(@Param("vo") QrCodeVo vo);
 
 	QrCodeVo setQrCodeSearch(@Param("qrCode") String qrCode);
+
+	int setTransactionUserInput(@Param("vo") TransactionVo vo);
 
 }
