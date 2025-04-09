@@ -64,5 +64,10 @@ public class UserServiceImpl implements UserService {
 	public List<UserVo> getUserArrayId() {
 		return UserDao.getUserArrayId();
 	}
+
+	@Override
+	public List<UserVo> getUser2List() {
+		return UserDao.getUser2List();
+	}
 	
 }

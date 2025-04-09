@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.JspringProject.vo.ChartVo;
 import com.spring.JspringProject.vo.QrCodeVo;
 import com.spring.JspringProject.vo.TransactionVo;
+import com.spring.JspringProject.vo.UserVo;
 
 public interface StudyService {
 
@@ -36,5 +37,11 @@ public interface StudyService {
 	QrCodeVo setQrCodeSearch(String qrCode);
 
 	int setTransactionUserInput(TransactionVo vo);
+
+	int setTransactionUser1Input(UserVo vo);
+
+	int setTransactionUser2Input(UserVo vo);
+
+	int setTransactionUser3Input(TransactionVo vo);
 	
 }

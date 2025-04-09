@@ -26,4 +26,6 @@ public interface UserService {
 
 	List<UserVo> getUserArrayId();
 
+	List<UserVo> getUser2List();
+
 }

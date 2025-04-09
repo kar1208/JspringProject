@@ -30,6 +30,9 @@
   	select * from user where idx = #{idx};
   </select>
   
+  <select id="getUser2List" resultType="com.spring.JspringProject.vo.UserVo">
+  	select * from user2 order by idx desc;
+  </select>
   
   
   

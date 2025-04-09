@@ -3,11 +3,14 @@ package com.spring.JspringProject.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -31,12 +34,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,11 +50,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.JspringProject.common.ARIAUtil;
+import com.spring.JspringProject.common.SecurityUtil;
 import com.spring.JspringProject.service.MemberService;
 import com.spring.JspringProject.service.StudyService;
 import com.spring.JspringProject.service.UserService;
 import com.spring.JspringProject.vo.ChartVo;
 import com.spring.JspringProject.vo.CrawlingVo;
+import com.spring.JspringProject.vo.DbPayMentVo;
 import com.spring.JspringProject.vo.MailVo;
 import com.spring.JspringProject.vo.MemberVo;
 import com.spring.JspringProject.vo.QrCodeVo;
@@ -73,6 +82,9 @@ public class StudyController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwoEncoder;
 	
 	@RequestMapping("/ajax/ajaxForm")
 	public String ajaxFormGet() {
@@ -732,6 +744,53 @@ public class StudyController {
 		return studyService.setQrCodeSearch(qrCode);
 	}
 	
+	
+	
+	
+	// 암호화(password) 체크 폼 연습
+	@GetMapping("/password/passwordForm")
+	public String passwordFormGet() {
+		return "study/password/passwordForm";
+	}
+	
+	// 암호화(sha256) 체크 연습
+	@ResponseBody 
+	@PostMapping(value="/password/sha256Check", produces="application/text; charset=utf-8")
+	public String sha256CheckPost(String pwd) {
+		String salt = UUID.randomUUID().toString().substring(0,8);
+		
+		
+		SecurityUtil securityUtil = new SecurityUtil();
+		String encPwd = securityUtil.encryptSHA256(salt+pwd);
+		
+		return encPwd;
+	}
+	
+	
+	
+	// 암호화(bCryptPasswordCheck) 체크 연습
+	@ResponseBody 
+	@PostMapping(value="/password/bCryptPasswordCheck", produces="application/text; charset=utf-8")
+	public String bCryptPasswordCheckPost(String pwd) {
+		return passwoEncoder.encode(pwd);
+	}
+	
+	// 암호화(aria) 체크 연습
+	@ResponseBody 
+	@PostMapping(value="/password/ariaCheck", produces="application/text; charset=utf-8")
+	public String ariaCheckPost(String pwd) throws InvalidKeyException, UnsupportedEncodingException {
+		String salt = UUID.randomUUID().toString().substring(0,8);
+		String encPwd = ARIAUtil.ariaEncrypt(salt + pwd); 
+		String decPwd = ARIAUtil.ariaDecrypt(encPwd); 
+		
+		return "암호화:\n" + encPwd + ",복호화:" + decPwd.substring(decPwd.indexOf(":")+9);
+	}
+	
+	
+	
+	
+	
+	
 	// BackEnd 체크(Validator 처리) 폼 보기
 	@RequestMapping(value="/validator/validatorForm", method = RequestMethod.GET)
 	public String validatorFormGet(Model model) {
@@ -777,6 +836,74 @@ public class StudyController {
 		
 		if(res != 0) return "redirect:/message/transactionUserInputOk";
 		return "redirect:/message/transactionUserInputNo";
+	}
+	
+	
+	
+	
+	// Transaction(트랜잭션) 연습 폼 보기
+	@RequestMapping(value="/transaction/transactionForm", method = RequestMethod.GET)
+	public String transactionFormGet(Model model) {
+		List<UserVo> vos = userService.getUserList();
+		model.addAttribute("vos",vos);
+		
+		List<UserVo> vos2 = userService.getUser2List();
+		model.addAttribute("vos2",vos2);
+		
+		return "study/transaction/transactionForm";
+	}
+	// Transaction(트랜잭션) 연습 user/user2 테이블에 등록내역 저장처리
+	@Transactional
+	@RequestMapping(value="/transaction/transactionForm", method = RequestMethod.POST)
+	public String transactionFormPost(UserVo vo) {
+		int res = 0;
+		
+		res = studyService.setTransactionUser1Input(vo); //user 테이블 등록
+		res = studyService.setTransactionUser2Input(vo); //user2 테이블 등록
+		
+		
+		if(res != 0) return "redirect:/message/transactionUserInputOk";
+		else return "redirect:/message/transactionUserInputNo";
+	}
+	
+	
+	
+	// Transaction(트랜잭션) 연습 user/user2 테이블에 등록내역 저장처리
+	@Transactional
+	@RequestMapping(value="/transaction/transactionUser3Input", method = RequestMethod.POST)
+	public String transactionUser3InputPost(TransactionVo vo) {
+		int res = 0;
+		
+		res = studyService.setTransactionUser3Input(vo); //'user/user2' 테이블 등록
+		
+		
+		if(res != 0) return "redirect:/message/transactionUserInputOk";
+		else return "redirect:/message/transactionUserInputNo";
+	}
+	
+	
+	
+	// 결제처리 연습하기 폼 보기
+	@RequestMapping(value="/payment/paymentForm", method = RequestMethod.GET)
+	public String paymentFormGet(String mid) {
+		return "study/payment/paymentForm";
+	}
+	
+	// 결제처리 연습하기 처리
+	@RequestMapping(value="/payment/paymentForm", method = RequestMethod.POST)
+	public String paymentFormPost(DbPayMentVo vo, HttpSession session, Model model) {
+		session.setAttribute("sPaymentVo", vo);
+		model.addAttribute("vo", vo);
+		return "study/payment/payment";
+	}
+
+	// 결제처리 연습(결제 처리 완료후 수행하는 부분)
+	@RequestMapping(value="/payment/paymentOk", method = RequestMethod.GET)
+	public String paymentOkGet(HttpSession session, Model model) {
+		DbPayMentVo vo = (DbPayMentVo) session.getAttribute("sPaymentVo");
+		model.addAttribute("vo", vo);
+		session.removeAttribute("sPaymentVo");
+		return "study/payment/paymentOk";
 	}
 	
 	

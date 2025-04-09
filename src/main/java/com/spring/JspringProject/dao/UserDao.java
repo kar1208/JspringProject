@@ -26,6 +26,8 @@ public interface UserDao {
 
 	List<UserVo> getUserArrayId();
 
+	List<UserVo> getUser2List();
+
 
 
 

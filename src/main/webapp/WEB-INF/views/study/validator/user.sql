@@ -17,3 +17,9 @@ desc user;
 insert into user values (default, 'admin', '1234', '관리자', default, default, '서울');
 
 select * from user;
+
+create table user2 (
+	idx int not null auto_increment primary key,
+	mid varchar(20) not null,
+	job varchar(10) not null
+);

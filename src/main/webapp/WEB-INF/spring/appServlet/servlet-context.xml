@@ -3,9 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -19,12 +23,11 @@
 	<resources mapping="/css/**" location="/resources/css/" />
 	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/member/**" location="/resources/data/member/" />
-	<resources mapping="/ckeditor/**" location="/resources/ckeditor/"></resources>
-	<resources mapping="/fileUpload/**" location="/resources/data/fileUpload/"></resources>
-	<resources mapping="/pds/**" location="/resources/data/pds/"></resources>
-	<resources mapping="/qrCode/**" location="/resources/data/qrCode/"></resources>
-	<resources mapping="/ticket/**" location="/resources/data/ticket/"></resources>
-	
+	<resources mapping="/ckeditor/**" location="/resources/ckeditor/" />
+	<resources mapping="/fileUpload/**" location="/resources/data/fileUpload/" />
+	<resources mapping="/pds/**" location="/resources/data/pds/" />
+	<resources mapping="/qrCode/**" location="/resources/data/qrCode/" />
+	<resources mapping="/ticket/**" location="/resources/data/ticket/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -37,12 +40,21 @@
 	<!-- 파일 업로드에 필요한 라이브러리를 bean으로 등록(한번 업로드시에 최대 20MByte로 한정) -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="20971520" />
-		<beans:property name="defaultEncoding" value="utf-8"></beans:property>
+		<beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
 	
 	<!-- Spring Security의 BCryptPasswordEncoder 객체를 Bean으로 등록 -->
-	<beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-		
-	</beans:bean>
+	<beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	
+	<!-- Transaction(트랜잭션) 어노테이션 처리를 위한 설정 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- 스프링 스케줄러 생성... -->
+	
+	<task:scheduler id="jobScheduler" pool-size="10"/>
+	<task:annotation-driven scheduler="jobScheduler"/>
+	
+	
+	
 	
 </beans:beans>

@@ -64,6 +64,11 @@ public class UserDaoImpl implements UserDao {
 	public List<UserVo> getUserArrayId() {
 		return sqlSession.selectList("getUserArrayId");
 	}
+
+	@Override
+	public List<UserVo> getUser2List() {
+		return sqlSession.selectList("userNS.getUser2List");
+	}
 	
 	
 }
